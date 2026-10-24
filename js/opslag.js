@@ -28,7 +28,9 @@ export async function start(bijWijziging) {
   try {
     ({ firebaseConfig: config } = await import('./firebase-config.js'));
   } catch { /* geen config */ }
-  if (config && config.apiKey) {
+  // ?lokaal achter het adres: testen zonder in te loggen (gegevens alleen op dit apparaat).
+  const forceerLokaal = new URLSearchParams(location.search).has('lokaal');
+  if (config && config.apiKey && !forceerLokaal) {
     status.modus = 'online';
     backend = await import('./opslag-firebase.js');
     await backend.start(config, { cache, status, melding, lokaleGegevens });

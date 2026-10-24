@@ -5,6 +5,7 @@ import {
 import * as opslag from './opslag.js';
 import { laadTuin, alleTaken } from './data.js';
 import { verkleinFoto } from './fotos.js';
+import * as weer from './weer.js';
 
 const app = document.getElementById('app');
 const toastEl = document.getElementById('toast');
@@ -17,7 +18,12 @@ const state = {
   zoek: '',
   filter: 'Alle',
   route: '',
+  weer: {},
+  weerFout: null,
+  plaatsen: [],
 };
+
+const DAG_KORT = ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'];
 
 const GROEP_ICOON = { water: '💧', controle: '🔍', wildescheuten: '✂️', paal: '🪵', blad: '🍂' };
 const CATEGORIEEN = ['Heester', 'Boom', 'Haag', 'Roos', 'Vaste plant', 'Siergras', 'Bodembedekker',
@@ -82,14 +88,19 @@ function vinkKnop(t, gedaan) {
     : `<button class="vink" data-actie="vink" data-key="${esc(t.key)}" aria-label="Markeer als gedaan" title="Gedaan">✓</button>`;
 }
 
+function weerLabel(adv) {
+  return adv ? `<p class="weerlabel weerlabel--${adv.effect}">${adv.icoon} ${esc(adv.tekst)}</p>` : '';
+}
+
 function taakKaart(t, { gedaan = false } = {}) {
   return `
-    <article class="taak taak--${t.prioriteit}${gedaan ? ' taak--gedaan' : ''}">
+    <article class="taak taak--${t.prioriteit}${gedaan ? ' taak--gedaan' : ''}${t.weer ? ` taak--weer-${t.weer.effect}` : ''}">
       <a class="taak__foto" href="#/plant/${esc(t.plant.id)}">${thumb(t.plant)}</a>
       <div class="taak__body">
         <a class="taak__plant" href="#/plant/${esc(t.plant.id)}">${esc(t.plant.naam)}</a>
         <h3 class="taak__titel">${esc(t.titel)}</h3>
         ${chips(t)}
+        ${weerLabel(t.weer)}
         <details class="uitleg" data-open-id="u-${esc(t.key)}">
           <summary>Hoe?</summary>
           <p>${esc(t.uitleg)}</p>
@@ -104,12 +115,14 @@ function groepKaart(groep, taken) {
   const titel = state.tuin.groepen[groep] || groep;
   const prio = taken.some((t) => t.prioriteit === 'moet') ? 'moet' : 'kan';
   const namen = taken.map((t) => t.plant.naam).join(', ');
+  const adv = taken.find((t) => t.weer)?.weer;
   return `
-    <article class="taak taak--${prio} groep">
+    <article class="taak taak--${prio} groep${adv ? ` taak--weer-${adv.effect}` : ''}">
       <div class="taak__foto groep__icoon" aria-hidden="true">${GROEP_ICOON[groep] || '🌿'}</div>
       <div class="taak__body">
         <h3 class="taak__titel">${esc(titel)}</h3>
         <p class="taak__plant">${taken.length} planten: ${esc(namen)}</p>
+        ${weerLabel(adv)}
         <details class="uitleg" data-open-id="g-${esc(groep)}">
           <summary>Per plant</summary>
           <ul class="groep__lijst">
@@ -184,6 +197,92 @@ function letOpLijst(taken, { open = false } = {}) {
     </section>`;
 }
 
+// ---------------------------------------------------------------- weer
+
+/** Bepaalt welke weerdata (en analyse) de app nu gebruikt. */
+function bepaalWeer() {
+  const testWeer = new URLSearchParams(location.search).get('weer');
+  if (testWeer) {
+    const data = weer.scenario(testWeer, state.datum);
+    return { data, analyse: weer.analyseer(data.daily, state.datum), scenario: testWeer };
+  }
+  if (!opslag.instelling('weerAan', true)) return { uit: true };
+  const locatie = opslag.instelling('locatie', null);
+  if (!locatie) return { geenLocatie: true };
+  if (isTestdatum()) return { locatie, testdatum: true };
+  const data = weer.bewaardWeer(locatie);
+  if (!data || weer.isTeOud(data)) return { locatie, laden: true };
+  const analyse = weer.analyseer(data.daily, new Date());
+  return analyse ? { locatie, data, analyse } : { locatie, laden: true };
+}
+
+let weerBezig = false;
+async function verversWeer({ forceer = false } = {}) {
+  const locatie = opslag.instelling('locatie', null);
+  if (!locatie || !opslag.instelling('weerAan', true) || weerBezig) return;
+  weerBezig = true;
+  try {
+    const nieuw = await weer.ververs(locatie, { forceer });
+    state.weerFout = null;
+    if (nieuw) bijWijziging();
+  } catch (fout) {
+    state.weerFout = fout.message;
+  } finally {
+    weerBezig = false;
+  }
+}
+
+function dagIcoon(d) {
+  if (d.tmin <= 0) return '❄️';
+  if (d.wind >= weer.DREMPEL.storm) return '🌬️';
+  if (d.regen >= 5) return '🌧️';
+  if (d.regen >= 1) return '🌦️';
+  return d.tmax >= 18 ? '☀️' : '⛅';
+}
+
+function weerKaart() {
+  const w = state.weer;
+  if (w.uit) return '';
+  if (w.geenLocatie) {
+    return '<a class="weerkaart weerkaart--leeg" href="#/meer">🌦️ Stel de locatie van je tuin in voor weeradvies →</a>';
+  }
+  if (w.testdatum) {
+    return '<p class="weerkaart weerkaart--leeg">🌦️ Weeradvies staat uit bij een testdatum.</p>';
+  }
+  if (w.laden || !w.analyse) {
+    return `<p class="weerkaart weerkaart--leeg">🌦️ ${state.weerFout ? `Weer niet beschikbaar (${esc(state.weerFout)}).` : 'Weer wordt opgehaald…'}</p>`;
+  }
+  const a = w.analyse;
+  const punten = [];
+  if (weer.isDroogte(a)) punten.push(`🌵 Droog: ${Math.abs(Math.round(a.balans))} mm tekort afgelopen week`);
+  else punten.push(`☔ ${Math.round(a.regen7)} mm regen afgelopen week <span class="klein">(verdamping ${Math.round(a.verdamping7)} mm)</span>`);
+  if (a.regenKomend >= 1) punten.push(`🌧️ ${Math.round(a.regenKomend)} mm regen verwacht vandaag en morgen`);
+  if (a.vorst) punten.push(`❄️ Vorst verwacht ${a.vorst.dag} (${weer.graden(a.vorst.tmin)})`);
+  if (a.storm) punten.push(`🌬️ Storm ${a.storm.dag}: windstoten ${a.storm.wind} km/u`);
+  if (a.hitte) punten.push(`🔥 Heet ${a.hitte.dag}: ${a.hitte.tmax}°`);
+  const bijgewerkt = w.scenario
+    ? `<span class="chip chip--test">testweer: ${esc(w.scenario)}</span>`
+    : `${esc(w.locatie?.naam || '')} · ${new Date(w.data.opgehaald).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}`;
+  return `
+    <section class="weerkaart">
+      <div class="weerkaart__kop"><strong>Weer</strong><span class="klein">${bijgewerkt}</span></div>
+      <ul class="weerkaart__punten">${punten.map((p) => `<li>${p}</li>`).join('')}</ul>
+      <div class="weerstrip">
+        ${a.week.map((d) => {
+          const [j, m, dd] = d.datum.split('-').map(Number);
+          const dag = d.dag === 'vandaag' ? 'nu' : DAG_KORT[new Date(j, m - 1, dd).getDay()];
+          return `
+          <div class="weerdag">
+            <span class="weerdag__naam">${dag}</span>
+            <span class="weerdag__icoon">${dagIcoon(d)}</span>
+            <span class="weerdag__regen">${d.regen >= 0.5 ? `${Math.round(d.regen)} mm` : ''}</span>
+            <span class="weerdag__temp">${weer.graden(d.tmax)} <span class="klein">${weer.graden(d.tmin)}</span></span>
+          </div>`;
+        }).join('')}
+      </div>
+    </section>`;
+}
+
 // ---------------------------------------------------------------- schermen
 
 function schermNu() {
@@ -194,7 +293,31 @@ function schermNu() {
   ind.laatsteKans.sort(moetEerst);
   ind.binnenkort.sort(moetEerst);
   const volgende = MAANDEN[d.getMonth() + 1 > 11 ? 0 : d.getMonth() + 1];
-  const open = ind.laatsteKans.length + ind.moet.length + ind.kan.length;
+
+  // Weer: taken naar voren halen ('belangrijk') of laten wachten ('wachten' / 'nietNodig').
+  const weerBelangrijk = [];
+  const weerWachten = [];
+  const analyse = state.weer.analyse;
+  if (analyse) {
+    const verdeel = (lijst) => lijst.filter((t) => {
+      const adv = weer.advies(t, analyse);
+      if (!adv) return true;
+      t.weer = adv;
+      (adv.effect === 'belangrijk' ? weerBelangrijk : weerWachten).push(t);
+      return false;
+    });
+    ind.laatsteKans = verdeel(ind.laatsteKans);
+    ind.moet = verdeel(ind.moet);
+    ind.kan = verdeel(ind.kan);
+    ind.binnenkort = ind.binnenkort.filter((t) => {
+      const adv = weer.advies(t, analyse);
+      if (adv?.effect !== 'belangrijk') return true;
+      t.weer = adv;
+      weerBelangrijk.push(t);
+      return false;
+    });
+  }
+  const open = weerBelangrijk.length + ind.laatsteKans.length + ind.moet.length + ind.kan.length;
 
   return `
     <header class="kop">
@@ -202,12 +325,22 @@ function schermNu() {
       <h1>Nu in de tuin</h1>
       <p class="kop__sub">${seizoen(d)} · ${open ? `${open} ${open === 1 ? 'taak' : 'taken'} open` : 'alles gedaan'}</p>
     </header>
+    ${weerKaart()}
     ${isBroedseizoen(d) ? `
       <div class="banner">🐦 <div><strong>Broedseizoen (15 maart – 15 juli).</strong> Geen hagen knippen en geen grote snoei. Kijk altijd eerst of er nesten zitten.</div></div>` : ''}
+    ${sectie('Nu belangrijk door het weer', weerBelangrijk)}
     ${sectie('Laatste kans deze maand', ind.laatsteKans, `Deze taken lopen eind ${MAANDEN[d.getMonth()]} af.`)}
     ${sectie('Moet nu', ind.moet)}
     ${sectie('Kan nu', ind.kan)}
     ${!open ? '<p class="leeg">Niets openstaands voor nu. Geniet van de tuin! 🌱</p>' : ''}
+    ${weerWachten.length ? `
+      <section class="sectie">
+        <details class="gedaan" data-open-id="weer-wachten">
+          <summary><h2>Even wachten vanwege het weer <span class="teller">${weerWachten.length}</span></h2>
+            <p class="sectie__uitleg">${esc([...new Set(weerWachten.map((t) => t.weer.icoon))].join(' '))} Deze taken kunnen beter wachten of zijn nu niet nodig.</p></summary>
+          <div class="kaarten">${kaarten(weerWachten)}</div>
+        </details>
+      </section>` : ''}
     ${letOpLijst(ind.letOp)}
     ${sectie(`Binnenkort (${volgende})`, ind.binnenkort)}
     ${ind.gedaan.length ? `
@@ -273,6 +406,7 @@ async function schermPlant(id) {
   const m = state.datum.getMonth() + 1;
   const taken = (plant.taken || []).map((t) => ({ ...t, key: `${plant.id}/${t.id}`, plant }));
   const nu = taken.filter((t) => t.prioriteit !== 'niet' && inPeriode(t, m));
+  for (const t of nu) t.weer = weer.advies(t, state.weer.analyse);
   const letOp = taken.filter((t) => t.prioriteit === 'niet' && inPeriode(t, m));
   const verborgen = state.tuin.verborgen.has(plant.id);
 
@@ -425,6 +559,12 @@ function taakRij(t = {}) {
           <option value="wekelijks"${t.herhaal === 'wekelijks' ? ' selected' : ''}>wekelijks</option>
         </select></label>
       </div>
+      <label>Soort (voor weeradvies) <select name="soort">
+        ${[['', 'geen'], ['snoeien', 'snoeien / knippen'], ['water', 'water geven'], ['maaien', 'maaien'],
+          ['bemesten', 'bemesten'], ['zaaien', 'zaaien / planten / scheuren'], ['vorst', 'beschermen tegen vorst'],
+          ['storm', 'vastzetten / steunen (storm)']]
+          .map(([w, l]) => `<option value="${w}"${(t.soort || '') === w ? ' selected' : ''}>${l}</option>`).join('')}
+      </select></label>
       <textarea name="uitleg" rows="2" placeholder="Hoe doe je het?">${esc(t.uitleg || '')}</textarea>
       <button type="button" class="tekstknop" data-actie="taak-weg">Taak verwijderen</button>
     </fieldset>`;
@@ -479,6 +619,23 @@ async function schermMeer() {
         <h2>Opslag</h2>
         <p>Afgevinkte taken, notities, eigen planten en foto's staan alleen op dit apparaat.</p>
       </section>`}
+
+    <section class="sectie kaartje" id="weer">
+      <h2>Weer</h2>
+      <p>De app kijkt naar regen, verdamping, vorst, hitte en storm (afgelopen week en komende dagen) en past daar de taken op aan: water geven als het droog is, wachten met snoeien als er vorst komt, palen controleren voor een storm.</p>
+      <p>Locatie van de tuin: <strong>${esc(opslag.instelling('locatie', null)?.naam || 'nog niet ingesteld')}</strong></p>
+      <div class="acties">
+        <button class="knop knop--licht" data-actie="locatie-gps">📍 Gebruik mijn locatie</button>
+      </div>
+      <form class="acties plaatszoeker" data-form="plaats">
+        <input name="plaats" placeholder="Of zoek een plaats, bijv. Wageningen" required>
+        <button class="knop knop--licht" type="submit">Zoek</button>
+      </form>
+      ${state.plaatsen.length ? `<ul class="plaatsen">${state.plaatsen.map((p, i) => `
+        <li><button class="tekstknop" data-actie="kies-plaats" data-i="${i}">📍 ${esc(p.naam)}</button></li>`).join('')}</ul>` : ''}
+      <label class="schakelaar"><input type="checkbox" data-invoer="weer-aan"${opslag.instelling('weerAan', true) ? ' checked' : ''}> Weeradvies gebruiken</label>
+      <p class="klein">Weerdata: <a href="https://open-meteo.com/" target="_blank" rel="noopener">${esc(weer.BRON)}</a>.${state.weer.data && !state.weer.scenario ? ` Laatst opgehaald om ${new Date(state.weer.data.opgehaald).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}.` : ''} Testen kan met <code>?weer=vorst</code>, <code>droog</code>, <code>nat</code> of <code>storm</code> achter het adres.</p>
+    </section>
 
     <section class="sectie kaartje">
       <h2>Back-up</h2>
@@ -573,6 +730,8 @@ async function vernieuw() {
   uitgesteld = false;
   state.tuin = await laadTuin();
   state.gedaan = opslag.gedaanMap();
+  state.weer = bepaalWeer();
+  if (state.weer.laden) verversWeer();
   await render();
 }
 
@@ -585,7 +744,7 @@ function bezigMetInvullen() {
   const naam = (location.hash || '').split('/')[1];
   if (naam === 'nieuw' || naam === 'bewerk') return true;
   const actief = document.activeElement;
-  if (actief && app.contains(actief) && actief.matches('input, textarea, select')) return true;
+  if (actief && app.contains(actief) && actief.matches('input:not([type=checkbox]):not([type=file]), textarea, select')) return true;
   return [...app.querySelectorAll('textarea')].some((t) => t.value.trim());
 }
 
@@ -602,6 +761,14 @@ app.addEventListener('focusout', () => {
 });
 
 // ---------------------------------------------------------------- acties
+
+async function zetLocatie(locatie) {
+  if (!locatie) return;
+  await opslag.zetInstelling('locatie', locatie);
+  await vernieuw();
+  toast(`Locatie: ${locatie.naam}`);
+  await verversWeer({ forceer: true });
+}
 
 async function vinkAf(keys) {
   for (const k of keys) await opslag.vinkAf(k, state.datum);
@@ -661,6 +828,21 @@ app.addEventListener('click', async (e) => {
       await opslag.uitloggen();
       location.hash = '#/nu';
       return;
+    case 'locatie-gps':
+      if (!navigator.geolocation) return toast('Locatie is niet beschikbaar op dit apparaat');
+      toast('Locatie bepalen…');
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        // Afgerond op ca. 1 km: genoeg voor het weer, zonder precies adres.
+        const rond = (x) => Math.round(x * 100) / 100;
+        const lat = rond(pos.coords.latitude);
+        const lon = rond(pos.coords.longitude);
+        await zetLocatie({ naam: `Mijn locatie (${lat}, ${lon})`, lat, lon });
+      }, (fout) => toast(`Locatie niet gevonden (${fout.message})`), { timeout: 15000, maximumAge: 600000 });
+      return;
+    case 'kies-plaats':
+      await zetLocatie(state.plaatsen[Number(el.dataset.i)]);
+      state.plaatsen = [];
+      return render();
     case 'taak-erbij':
       app.querySelector('.taakrijen').insertAdjacentHTML('beforeend', taakRij());
       return;
@@ -709,6 +891,10 @@ app.addEventListener('change', async (e) => {
     await vernieuw();
     toast('Foto toegevoegd');
   }
+  if (el.dataset.invoer === 'weer-aan') {
+    await opslag.zetInstelling('weerAan', el.checked);
+    await vernieuw();
+  }
   if (el.dataset.invoer === 'import' && el.files[0]) {
     try {
       const data = JSON.parse(await el.files[0].text());
@@ -733,6 +919,16 @@ app.addEventListener('submit', async (e) => {
     await vernieuw();
     toast('Notitie opgeslagen');
   }
+  if (form.dataset.form === 'plaats') {
+    try {
+      state.plaatsen = await weer.zoekPlaats(form.plaats.value.trim());
+      if (!state.plaatsen.length) toast('Geen plaats gevonden');
+    } catch (fout) {
+      toast(`Zoeken mislukt: ${fout.message}`);
+    }
+    form.plaats.blur();
+    await render();
+  }
   if (form.dataset.form === 'datum') {
     const url = new URL(location.href);
     url.searchParams.set('datum', form.datum.value);
@@ -750,6 +946,7 @@ app.addEventListener('submit', async (e) => {
         prioriteit: v('prioriteit'), uitleg: v('uitleg'),
       };
       if (v('herhaal')) taak.herhaal = v('herhaal');
+      if (v('soort')) taak.soort = v('soort');
       return taak;
     }).filter((t) => t.titel);
     const plant = {
@@ -780,10 +977,16 @@ window.addEventListener('hashchange', async () => {
 
 // ---------------------------------------------------------------- start
 
+// Weer opnieuw ophalen als de app weer in beeld komt (max. elke 3 uur).
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') verversWeer();
+});
+
 (async function start() {
   try {
     await opslag.start(bijWijziging);
     await vernieuw();
+    verversWeer();
   } catch (fout) {
     app.innerHTML = `<p class="leeg">Er ging iets mis bij het laden: ${esc(fout.message)}</p>`;
     console.error(fout);

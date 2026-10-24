@@ -32,6 +32,9 @@ for (const p of data.planten) {
     if (!['moet', 'kan', 'niet'].includes(t.prioriteit)) fouten.push(`${tw}: prioriteit moet moet/kan/niet zijn`);
     if (t.herhaal && !['wekelijks', 'maandelijks'].includes(t.herhaal)) fouten.push(`${tw}: onbekende herhaal`);
     if (t.groep && !data.groepen[t.groep]) fouten.push(`${tw}: onbekende groep '${t.groep}'`);
+    if (t.soort && !['water', 'snoeien', 'maaien', 'bemesten', 'zaaien', 'vorst', 'storm'].includes(t.soort)) {
+      fouten.push(`${tw}: onbekende soort '${t.soort}'`);
+    }
   }
   for (const m of p.bloeiMaanden || []) if (m < 1 || m > 12) fouten.push(`${waar}: bloeimaand ${m} ongeldig`);
 }

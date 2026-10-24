@@ -1,6 +1,6 @@
 // Service worker: zorgt dat de app offline werkt.
 // Verhoog VERSIE na elke wijziging aan de app, dan halen telefoons de nieuwe versie op.
-const VERSIE = 'tuinplanner-v2';
+const VERSIE = 'tuinplanner-v3';
 const FIREBASE = 'https://www.gstatic.com/firebasejs/12.19.0/';
 
 const SCHIL = [
@@ -14,6 +14,7 @@ const SCHIL = [
   'js/firebase-config.js',
   'js/data.js',
   'js/fotos.js',
+  'js/weer.js',
   'data/planten.json',
   'manifest.webmanifest',
   'icons/icon-192.png',

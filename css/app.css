@@ -290,6 +290,40 @@ input, select, textarea {
 
 .kaartje { background: var(--vlak); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--schaduw); }
 
+/* ---------- weer */
+.weerkaart {
+  display: block; background: var(--vlak); border-radius: var(--radius); padding: 12px 14px;
+  margin-bottom: 16px; box-shadow: var(--schaduw); color: var(--tekst); text-decoration: none;
+}
+.weerkaart--leeg { color: var(--zacht); font-size: 0.93rem; }
+.weerkaart__kop { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.weerkaart__punten { list-style: none; padding: 0; margin: 6px 0 10px; display: grid; gap: 2px; font-size: 0.93rem; }
+.weerstrip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.weerdag {
+  display: grid; justify-items: center; gap: 1px; padding: 6px 0; border-radius: 10px;
+  background: var(--vlak-2); font-size: 0.78rem; text-align: center;
+}
+.weerdag__naam { color: var(--zacht); font-weight: 600; }
+.weerdag__icoon { font-size: 1.25rem; line-height: 1.3; }
+.weerdag__regen { color: #3b78b5; min-height: 1.1em; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .weerdag__regen { color: #8ab8e6; } }
+.weerdag__temp .klein { font-size: 0.72rem; }
+
+.weerlabel {
+  font-size: 0.85rem; border-radius: 8px; padding: 4px 8px; margin: 4px 0; display: inline-block;
+  background: var(--vlak-2);
+}
+.weerlabel--belangrijk { background: var(--banner); border: 1px solid var(--banner-rand); }
+.weerlabel--wachten, .weerlabel--nietNodig { color: var(--zacht); }
+.taak--weer-belangrijk { border-left-color: #c98a1b; }
+.taak--weer-wachten, .taak--weer-nietNodig { opacity: 0.85; }
+
+.plaatsen { list-style: none; padding: 0; margin: 6px 0; }
+.plaatszoeker { margin-top: 8px; }
+.plaatszoeker input { flex: 1; min-width: 0; }
+.schakelaar { display: flex; align-items: center; gap: 8px; margin: 10px 0 4px; }
+.schakelaar input { width: auto; }
+
 /* ---------- inloggen */
 .inlog { max-width: 420px; margin: 12vh auto 0; text-align: center; display: grid; gap: 12px; justify-items: center; }
 .inlog img { border-radius: 22px; }

@@ -40,6 +40,23 @@ Afgevinkte taken, notities, eigen planten en foto's worden bewaard in **Firestor
 - Inloggen werkt alleen vanaf domeinen die in de Firebase-console zijn toegestaan: Authentication → Instellingen → Geautoriseerde domeinen. Hier staan `localhost` en `pascalduenk.github.io`.
 - Foto's worden verkleind (max. 1000 px, ca. 250 KB) en in Firestore opgeslagen. Daarvoor is het gratis Spark-abonnement genoeg.
 
+## Weeradvies
+
+De app haalt het weer op bij [Open-Meteo](https://open-meteo.com/) (KNMI-model; gratis en zonder sleutel). Het gaat om de afgelopen 7 dagen en de komende 7. Op basis daarvan past de app de taken aan:
+
+| Weer | Wat de app doet |
+|---|---|
+| Genoeg regen (≥ 10 mm en meer dan de verdamping, of ≥ 5 mm verwacht) | water geven → "niet nodig" |
+| Droogte (≥ 10 mm tekort, geen regen op komst) | water geven → "nu belangrijk" |
+| Vorst in de komende 3 dagen | snoeien, bemesten en zaaien wachten; vorstbescherming → "nu belangrijk" |
+| Nat (regen vandaag, gras nat) | snoeien en maaien liever op een droge dag |
+| Storm (windstoten ≥ 75 km/u) | palen, banden en opbinden → "nu belangrijk" |
+| Droogte, hitte of zware regen | bemesten wacht |
+
+- Welke regel bij een taak hoort, staat in het veld `soort` in `data/planten.json`: `water`, `snoeien`, `maaien`, `bemesten`, `zaaien`, `vorst` of `storm`.
+- De regels en drempels staan in `js/weer.js`. Testen doe je met `node tools/test_weer.mjs`, of in de browser met `?weer=vorst`, `droog`, `nat` of `storm` achter het adres.
+- `?lokaal` achter het adres gebruikt de opslag op het apparaat zelf in plaats van de online database. Handig om te testen zonder in te loggen.
+
 ## Op de telefoon installeren
 
 Open de GitHub Pages-link in Chrome op je telefoon. Tik op het menu (⋮) en kies **App installeren** of **Toevoegen aan startscherm**. Daarna start de app vanaf je startscherm en werkt hij ook zonder internet.

@@ -33,15 +33,15 @@
         "https://www.gamma.nl/klusadvies/a/hortensia-snoeien"
       ],
       "taken": [
-        { "id": "snoeien", "titel": "Kroon snoeien", "van": 3, "tot": 4, "prioriteit": "moet", "uitleg": "Knip alle takken van vorig jaar terug tot 1–2 paar gezonde knoppen boven de basis van de kroon, zodat een compacte bol van ca. 20–30 cm overblijft. De oude pluimen gaan hierbij mee. Haal dood, dun en kruisend hout weg en houd de kroon evenwichtig." },
-        { "id": "bemesten", "titel": "Bemesten", "van": 3, "tot": 4, "prioriteit": "kan", "uitleg": "Strooi na het snoeien organische heester- of hortensiamest op de boomspiegel." },
+        { "id": "snoeien", "titel": "Kroon snoeien", "van": 3, "tot": 4, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Knip alle takken van vorig jaar terug tot 1–2 paar gezonde knoppen boven de basis van de kroon, zodat een compacte bol van ca. 20–30 cm overblijft. De oude pluimen gaan hierbij mee. Haal dood, dun en kruisend hout weg en houd de kroon evenwichtig." },
+        { "id": "bemesten", "titel": "Bemesten", "van": 3, "tot": 4, "prioriteit": "kan", "soort": "bemesten", "uitleg": "Strooi na het snoeien organische heester- of hortensiamest op de boomspiegel." },
         { "id": "mulchen", "titel": "Mulchen", "van": 3, "tot": 5, "prioriteit": "kan", "uitleg": "Leg 5 cm compost of bladaarde op de boomspiegel om vocht vast te houden; houd de stamvoet vrij." },
-        { "id": "bemesten-2", "titel": "Tweede bemesting", "van": 6, "tot": 6, "prioriteit": "kan", "uitleg": "Licht bijgeven als de groei tegenvalt. Niet meer na augustus, anders rijpt het hout niet af." },
-        { "id": "water", "titel": "Water geven bij droogte", "van": 5, "tot": 9, "prioriteit": "moet", "herhaal": "wekelijks", "groep": "water", "uitleg": "In droge periodes 1–2× per week flink water aan de voet, 's ochtends of 's avonds. Hangend blad = dorst." },
+        { "id": "bemesten-2", "titel": "Tweede bemesting", "van": 6, "tot": 6, "prioriteit": "kan", "soort": "bemesten", "uitleg": "Licht bijgeven als de groei tegenvalt. Niet meer na augustus, anders rijpt het hout niet af." },
+        { "id": "water", "titel": "Water geven bij droogte", "van": 5, "tot": 9, "prioriteit": "moet", "soort": "water", "herhaal": "wekelijks", "groep": "water", "uitleg": "In droge periodes 1–2× per week flink water aan de voet, 's ochtends of 's avonds. Hangend blad = dorst." },
         { "id": "wildescheuten", "titel": "Wilde scheuten verwijderen", "van": 4, "tot": 9, "prioriteit": "kan", "herhaal": "maandelijks", "groep": "wildescheuten", "uitleg": "Knip scheuten op de stam of uit de voet direct weg, zodat alle groeikracht naar de kroon gaat." },
         { "id": "controle", "titel": "Controleren op luis en bladvlekken", "van": 6, "tot": 9, "prioriteit": "kan", "herhaal": "maandelijks", "groep": "controle", "uitleg": "Kijk op luis, wolluis en bladvlekken; verwijder aangetaste delen." },
-        { "id": "paal-voorjaar", "titel": "Steunpaal en band controleren", "van": 4, "tot": 4, "prioriteit": "kan", "groep": "paal", "uitleg": "Een stam met zware kroon heeft een stevige paal nodig. Controleer of de band niet insnoert en of de paal bij de grond niet rot." },
-        { "id": "paal-najaar", "titel": "Steunpaal en band controleren", "van": 10, "tot": 10, "prioriteit": "kan", "groep": "paal", "uitleg": "Vóór de herfststormen: band losser zetten als hij insnoert, rotte paal vervangen." },
+        { "id": "paal-voorjaar", "titel": "Steunpaal en band controleren", "van": 4, "tot": 4, "prioriteit": "kan", "soort": "storm", "groep": "paal", "uitleg": "Een stam met zware kroon heeft een stevige paal nodig. Controleer of de band niet insnoert en of de paal bij de grond niet rot." },
+        { "id": "paal-najaar", "titel": "Steunpaal en band controleren", "van": 10, "tot": 10, "prioriteit": "kan", "soort": "storm", "groep": "paal", "uitleg": "Vóór de herfststormen: band losser zetten als hij insnoert, rotte paal vervangen." },
         { "id": "pluimen-laten", "titel": "Pluimen laten staan", "van": 10, "tot": 2, "prioriteit": "niet", "uitleg": "Knip de uitgebloeide pluimen niet in de herfst af. Ze zijn sierlijk in de winter en gaan mee bij de voorjaarssnoei." }
       ]
     },
@@ -80,12 +80,12 @@
         "https://www.maxvandaag.nl/sessies/themas/huis-tuin-hobby/hortensias-snoeien-hoe-en-wanneer-moet-dit-gebeuren/"
       ],
       "taken": [
-        { "id": "snoeien", "titel": "Snoeien", "van": 3, "tot": 4, "prioriteit": "moet", "uitleg": "Bij voorkeur in maart: knip de stengels van vorig jaar terug tot 2–3 paar knoppen (ca. 30–60 cm boven de grond), samen met de oude pluimen. Haal dood en dun hout bij de basis weg. Niet te kort, anders buigen de stengels onder de pluimen." },
-        { "id": "bemesten", "titel": "Bemesten", "van": 3, "tot": 4, "prioriteit": "kan", "uitleg": "Organische heester- of hortensiamest na het snoeien." },
+        { "id": "snoeien", "titel": "Snoeien", "van": 3, "tot": 4, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Bij voorkeur in maart: knip de stengels van vorig jaar terug tot 2–3 paar knoppen (ca. 30–60 cm boven de grond), samen met de oude pluimen. Haal dood en dun hout bij de basis weg. Niet te kort, anders buigen de stengels onder de pluimen." },
+        { "id": "bemesten", "titel": "Bemesten", "van": 3, "tot": 4, "prioriteit": "kan", "soort": "bemesten", "uitleg": "Organische heester- of hortensiamest na het snoeien." },
         { "id": "mulchen", "titel": "Mulchen", "van": 3, "tot": 5, "prioriteit": "kan", "uitleg": "Leg 5 cm compost of bladaarde rond de voet." },
-        { "id": "bemesten-2", "titel": "Tweede bemesting", "van": 6, "tot": 6, "prioriteit": "kan", "uitleg": "Lichte extra gift. Na augustus niet meer." },
-        { "id": "water", "titel": "Water geven bij droogte", "van": 5, "tot": 9, "prioriteit": "moet", "herhaal": "wekelijks", "groep": "water", "uitleg": "1–2× per week flink water aan de voet; jonge planten vaker." },
-        { "id": "steunen", "titel": "Steunen bij zware pluimen", "van": 7, "tot": 9, "prioriteit": "kan", "uitleg": "Buigen de takken door bij regen? Gebruik een plantensteun of ring." },
+        { "id": "bemesten-2", "titel": "Tweede bemesting", "van": 6, "tot": 6, "prioriteit": "kan", "soort": "bemesten", "uitleg": "Lichte extra gift. Na augustus niet meer." },
+        { "id": "water", "titel": "Water geven bij droogte", "van": 5, "tot": 9, "prioriteit": "moet", "soort": "water", "herhaal": "wekelijks", "groep": "water", "uitleg": "1–2× per week flink water aan de voet; jonge planten vaker." },
+        { "id": "steunen", "titel": "Steunen bij zware pluimen", "van": 7, "tot": 9, "prioriteit": "kan", "soort": "storm", "uitleg": "Buigen de takken door bij regen? Gebruik een plantensteun of ring." },
         { "id": "controle", "titel": "Controleren op luis en meeldauw", "van": 6, "tot": 9, "prioriteit": "kan", "herhaal": "maandelijks", "groep": "controle", "uitleg": "Kijk op luis, wolluis en meeldauw; verwijder aangetaste delen." },
         { "id": "pluimen-laten", "titel": "Pluimen laten staan", "van": 10, "tot": 2, "prioriteit": "niet", "uitleg": "Laat de uitgebloeide pluimen de winter over staan; ze gaan mee bij de voorjaarssnoei." }
       ]
@@ -125,12 +125,12 @@
         "https://www.gamma.nl/klusadvies/a/hortensia-snoeien"
       ],
       "taken": [
-        { "id": "snoeien", "titel": "Snoeien", "van": 2, "tot": 3, "prioriteit": "moet", "uitleg": "Knip alle stengels terug tot ca. 30–50 cm boven de grond, boven een gezond knoppenpaar, en haal dunne en dode stengels bij de grond weg. Oude bloemen gaan mee." },
-        { "id": "bemesten", "titel": "Bemesten", "van": 3, "tot": 4, "prioriteit": "kan", "uitleg": "Organische heester- of hortensiamest na het snoeien." },
+        { "id": "snoeien", "titel": "Snoeien", "van": 2, "tot": 3, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Knip alle stengels terug tot ca. 30–50 cm boven de grond, boven een gezond knoppenpaar, en haal dunne en dode stengels bij de grond weg. Oude bloemen gaan mee." },
+        { "id": "bemesten", "titel": "Bemesten", "van": 3, "tot": 4, "prioriteit": "kan", "soort": "bemesten", "uitleg": "Organische heester- of hortensiamest na het snoeien." },
         { "id": "mulchen", "titel": "Mulchen", "van": 3, "tot": 5, "prioriteit": "kan", "uitleg": "Leg 5 cm compost of bladaarde rond de voet om vocht vast te houden." },
-        { "id": "steunen", "titel": "Steun plaatsen", "van": 5, "tot": 6, "prioriteit": "kan", "uitleg": "Zet een plantenring of steunen voordat de bollen zwaar worden, zodat ze bij regen niet plat gaan." },
-        { "id": "bemesten-2", "titel": "Tweede bemesting", "van": 6, "tot": 6, "prioriteit": "kan", "uitleg": "Lichte extra gift. Na augustus niet meer." },
-        { "id": "water", "titel": "Water geven bij droogte", "van": 5, "tot": 9, "prioriteit": "moet", "herhaal": "wekelijks", "groep": "water", "uitleg": "1–2× per week flink water aan de voet. Hangend blad = direct gieten." },
+        { "id": "steunen", "titel": "Steun plaatsen", "van": 5, "tot": 6, "prioriteit": "kan", "soort": "storm", "uitleg": "Zet een plantenring of steunen voordat de bollen zwaar worden, zodat ze bij regen niet plat gaan." },
+        { "id": "bemesten-2", "titel": "Tweede bemesting", "van": 6, "tot": 6, "prioriteit": "kan", "soort": "bemesten", "uitleg": "Lichte extra gift. Na augustus niet meer." },
+        { "id": "water", "titel": "Water geven bij droogte", "van": 5, "tot": 9, "prioriteit": "moet", "soort": "water", "herhaal": "wekelijks", "groep": "water", "uitleg": "1–2× per week flink water aan de voet. Hangend blad = direct gieten." },
         { "id": "controle", "titel": "Controleren op luis en meeldauw", "van": 6, "tot": 9, "prioriteit": "kan", "herhaal": "maandelijks", "groep": "controle", "uitleg": "Kijk op luis, dopluis en meeldauw." }
       ]
     },
@@ -158,15 +158,15 @@
         "https://www.bosch-diy.com/nl/nl/all-about-diy/hortensias-verzorgen-en-snoeien"
       ],
       "taken": [
-        { "id": "bloemen", "titel": "Oude bloemen wegknippen", "van": 3, "tot": 4, "prioriteit": "moet", "uitleg": "Pas na de laatste strenge vorst: knip de oude bloemhoofden af net boven het eerste stevige, gezonde knoppenpaar onder de bloem. Niet dieper, want daar zitten de bloemknoppen." },
-        { "id": "onderhoud", "titel": "Onderhoudssnoei / verjongen", "van": 3, "tot": 4, "prioriteit": "kan", "uitleg": "Haal dode en bevroren takken weg en zaag elk jaar 1–2 van de oudste takken bij de grond af. Nooit de hele plant terugsnoeien, anders bloeit hij dat jaar niet." },
-        { "id": "bemesten", "titel": "Bemesten", "van": 3, "tot": 4, "prioriteit": "kan", "uitleg": "Kaliumrijke hortensiamest na het wegknippen van de oude bloemen." },
+        { "id": "bloemen", "titel": "Oude bloemen wegknippen", "van": 3, "tot": 4, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Pas na de laatste strenge vorst: knip de oude bloemhoofden af net boven het eerste stevige, gezonde knoppenpaar onder de bloem. Niet dieper, want daar zitten de bloemknoppen." },
+        { "id": "onderhoud", "titel": "Onderhoudssnoei / verjongen", "van": 3, "tot": 4, "prioriteit": "kan", "soort": "snoeien", "uitleg": "Haal dode en bevroren takken weg en zaag elk jaar 1–2 van de oudste takken bij de grond af. Nooit de hele plant terugsnoeien, anders bloeit hij dat jaar niet." },
+        { "id": "bemesten", "titel": "Bemesten", "van": 3, "tot": 4, "prioriteit": "kan", "soort": "bemesten", "uitleg": "Kaliumrijke hortensiamest na het wegknippen van de oude bloemen." },
         { "id": "mulchen", "titel": "Mulchen", "van": 3, "tot": 5, "prioriteit": "kan", "uitleg": "5 cm bladaarde of compost rond de voet; belangrijk langs de muur, waar de grond snel uitdroogt." },
-        { "id": "nachtvorst", "titel": "Beschermen bij nachtvorst", "van": 4, "tot": 5, "prioriteit": "kan", "uitleg": "Leg bij voorspelde nachtvorst na het uitlopen een vliesdoek over de plant; jonge scheuten en knoppen bevriezen snel." },
-        { "id": "bemesten-2", "titel": "Tweede bemesting", "van": 6, "tot": 6, "prioriteit": "kan", "uitleg": "Lichte extra gift. Na augustus niet meer." },
-        { "id": "water", "titel": "Water geven bij droogte", "van": 5, "tot": 9, "prioriteit": "moet", "herhaal": "wekelijks", "groep": "water", "uitleg": "Langs de muur (regenschaduw) 1–3× per week bij droogte en hitte, liefst regenwater. Hangend blad = direct water." },
+        { "id": "nachtvorst", "titel": "Beschermen bij nachtvorst", "van": 4, "tot": 5, "prioriteit": "kan", "soort": "vorst", "uitleg": "Leg bij voorspelde nachtvorst na het uitlopen een vliesdoek over de plant; jonge scheuten en knoppen bevriezen snel." },
+        { "id": "bemesten-2", "titel": "Tweede bemesting", "van": 6, "tot": 6, "prioriteit": "kan", "soort": "bemesten", "uitleg": "Lichte extra gift. Na augustus niet meer." },
+        { "id": "water", "titel": "Water geven bij droogte", "van": 5, "tot": 9, "prioriteit": "moet", "soort": "water", "herhaal": "wekelijks", "groep": "water", "uitleg": "Langs de muur (regenschaduw) 1–3× per week bij droogte en hitte, liefst regenwater. Hangend blad = direct water." },
         { "id": "controle", "titel": "Controleren op meeldauw en luis", "van": 6, "tot": 9, "prioriteit": "kan", "herhaal": "maandelijks", "groep": "controle", "uitleg": "Witte aanslag op het blad is meeldauw: aangetast blad verwijderen." },
-        { "id": "winterbescherming", "titel": "Winterbescherming bij strenge vorst", "van": 12, "tot": 2, "prioriteit": "kan", "uitleg": "Bij vorst onder ca. −10 °C de struik losjes in vliesdoek of jute pakken en de voet afdekken met blad. Geen plastic; weghalen als de vorst voorbij is." },
+        { "id": "winterbescherming", "titel": "Winterbescherming bij strenge vorst", "van": 12, "tot": 2, "prioriteit": "kan", "soort": "vorst", "vorstGrens": -5, "uitleg": "Bij vorst onder ca. −10 °C de struik losjes in vliesdoek of jute pakken en de voet afdekken met blad. Geen plastic; weghalen als de vorst voorbij is." },
         { "id": "niet-snoeien", "titel": "Niet snoeien, bloemen laten staan", "van": 9, "tot": 2, "prioriteit": "niet", "uitleg": "Knip in herfst en winter niets af: de gedroogde bloemen beschermen de bloemknoppen tegen vorst. Herfstsnoei kost de bloei van volgend jaar." }
       ]
     },
@@ -195,19 +195,19 @@
         "https://projects.biodiversity.be/lepidoptera/species/4851/"
       ],
       "taken": [
-        { "id": "snoeien", "titel": "Snoeien", "van": 3, "tot": 4, "prioriteit": "moet", "uitleg": "Bij voorkeur half maart, als de strenge vorst voorbij is. Eerst dood, ziek, dun en kruisend hout weg en takken met zwarte vlekken terug tot gezond hout. Daarna de kroontakken inkorten tot 3–5 ogen (ca. 15 cm vanaf de entplek), net boven een naar buiten wijzend oog, schuin afgesneden. Houd de kroon evenwichtig rond." },
-        { "id": "bemesten", "titel": "Bemesten", "van": 3, "tot": 4, "prioriteit": "moet", "uitleg": "Rozenmest of organische mest (ca. 70 g/m²) na het snoeien." },
-        { "id": "bemesten-2", "titel": "Bemesten na eerste bloei", "van": 6, "tot": 7, "prioriteit": "moet", "uitleg": "Tweede gift na de eerste bloeigolf, liefst kaliumrijk. Na begin augustus niet meer, zodat het hout afrijpt." },
-        { "id": "uitgebloeid", "titel": "Uitgebloeide bloemen afknippen", "van": 6, "tot": 9, "prioriteit": "moet", "herhaal": "wekelijks", "uitleg": "Knip uitgebloeide bloemen af tot boven het eerste volgroeide blad (vijfblad); dat geeft nieuwe bloei." },
+        { "id": "snoeien", "titel": "Snoeien", "van": 3, "tot": 4, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Bij voorkeur half maart, als de strenge vorst voorbij is. Eerst dood, ziek, dun en kruisend hout weg en takken met zwarte vlekken terug tot gezond hout. Daarna de kroontakken inkorten tot 3–5 ogen (ca. 15 cm vanaf de entplek), net boven een naar buiten wijzend oog, schuin afgesneden. Houd de kroon evenwichtig rond." },
+        { "id": "bemesten", "titel": "Bemesten", "van": 3, "tot": 4, "prioriteit": "moet", "soort": "bemesten", "uitleg": "Rozenmest of organische mest (ca. 70 g/m²) na het snoeien." },
+        { "id": "bemesten-2", "titel": "Bemesten na eerste bloei", "van": 6, "tot": 7, "prioriteit": "moet", "soort": "bemesten", "uitleg": "Tweede gift na de eerste bloeigolf, liefst kaliumrijk. Na begin augustus niet meer, zodat het hout afrijpt." },
+        { "id": "uitgebloeid", "titel": "Uitgebloeide bloemen afknippen", "van": 6, "tot": 9, "prioriteit": "moet", "soort": "snoeien", "herhaal": "wekelijks", "uitleg": "Knip uitgebloeide bloemen af tot boven het eerste volgroeide blad (vijfblad); dat geeft nieuwe bloei." },
         { "id": "controle", "titel": "Sterroetdauw en bladmineerder", "van": 4, "tot": 10, "prioriteit": "moet", "herhaal": "maandelijks", "groep": "controle", "uitleg": "Haal bladeren met zwarte vlekken of mijngangen direct weg en gooi ze in de restafvalbak." },
         { "id": "wildescheuten", "titel": "Wilde scheuten verwijderen", "van": 4, "tot": 9, "prioriteit": "moet", "herhaal": "maandelijks", "groep": "wildescheuten", "uitleg": "Scheuten op de stam of uit de voet komen van de onderstam: direct wegtrekken of wegsnijden." },
-        { "id": "water", "titel": "Water geven bij droogte", "van": 5, "tot": 9, "prioriteit": "moet", "herhaal": "wekelijks", "groep": "water", "uitleg": "1× per week 5–10 liter aan de voet, 's ochtends; houd het blad droog." },
+        { "id": "water", "titel": "Water geven bij droogte", "van": 5, "tot": 9, "prioriteit": "moet", "soort": "water", "herhaal": "wekelijks", "groep": "water", "uitleg": "1× per week 5–10 liter aan de voet, 's ochtends; houd het blad droog." },
         { "id": "blad-opruimen", "titel": "Afgevallen blad opruimen", "van": 10, "tot": 12, "prioriteit": "moet", "herhaal": "wekelijks", "groep": "blad", "uitleg": "Ruim al het afgevallen rozenblad onder de stam op en voer het af (restafval): daarop overwintert sterroetdauw." },
-        { "id": "kroon-inkorten", "titel": "Kroon licht inkorten tegen wind", "van": 11, "tot": 11, "prioriteit": "kan", "uitleg": "Kort lange takken licht in, zodat de kroon minder wind vangt in de winter." },
+        { "id": "kroon-inkorten", "titel": "Kroon licht inkorten tegen wind", "van": 11, "tot": 11, "prioriteit": "kan", "soort": "storm", "uitleg": "Kort lange takken licht in, zodat de kroon minder wind vangt in de winter." },
         { "id": "mulchen", "titel": "Mulchen", "van": 11, "tot": 2, "prioriteit": "kan", "uitleg": "Na het opruimen van het blad 5 cm compost of goed verteerde mest op de grond (10 cm van de stam). Dat dekt achtergebleven sporen af." },
-        { "id": "winterbescherming", "titel": "Kroon beschermen bij strenge vorst", "van": 12, "tot": 2, "prioriteit": "kan", "uitleg": "Bij vorst onder ca. −10 °C de kroon met entplek losjes in vliesdoek of jute pakken; na de vorst weer weghalen." },
-        { "id": "paal-voorjaar", "titel": "Paal en banden controleren", "van": 4, "tot": 4, "prioriteit": "kan", "groep": "paal", "uitleg": "Een stamroos heeft blijvend een paal nodig met 2 banden. Controleer of ze niet insnoeren en of de paal niet is afgerot." },
-        { "id": "paal-najaar", "titel": "Paal en banden controleren", "van": 10, "tot": 10, "prioriteit": "kan", "groep": "paal", "uitleg": "Vóór de herfststormen de paal en banden nalopen." }
+        { "id": "winterbescherming", "titel": "Kroon beschermen bij strenge vorst", "van": 12, "tot": 2, "prioriteit": "kan", "soort": "vorst", "vorstGrens": -5, "uitleg": "Bij vorst onder ca. −10 °C de kroon met entplek losjes in vliesdoek of jute pakken; na de vorst weer weghalen." },
+        { "id": "paal-voorjaar", "titel": "Paal en banden controleren", "van": 4, "tot": 4, "prioriteit": "kan", "soort": "storm", "groep": "paal", "uitleg": "Een stamroos heeft blijvend een paal nodig met 2 banden. Controleer of ze niet insnoeren en of de paal niet is afgerot." },
+        { "id": "paal-najaar", "titel": "Paal en banden controleren", "van": 10, "tot": 10, "prioriteit": "kan", "soort": "storm", "groep": "paal", "uitleg": "Vóór de herfststormen de paal en banden nalopen." }
       ]
     },
     {
@@ -234,15 +234,15 @@
         "https://belle-epoque.nl/en/blogs/inspiratie/een-klimroos-leiden-tegen-een-muur-of-schutting"
       ],
       "taken": [
-        { "id": "snoeien", "titel": "Snoeien", "van": 2, "tot": 3, "prioriteit": "moet", "uitleg": "Jonge plant (jaar 1–2): alleen dood, beschadigd en dun hout weg; hoofdtakken niet inkorten. Gevestigde plant: hoofdtakken laten staan, de zijtakken die vorig jaar bloeiden terug tot 2–3 ogen, en elke 2–3 jaar 1 oude tak bij de grond weg. Niet bij vorst." },
-        { "id": "bemesten", "titel": "Bemesten", "van": 3, "tot": 4, "prioriteit": "moet", "uitleg": "Rozenmest of organische mest (ca. 70 g/m²), licht inwerken." },
-        { "id": "opbinden", "titel": "Nieuwe scheuten opbinden", "van": 4, "tot": 10, "prioriteit": "moet", "herhaal": "maandelijks", "uitleg": "Bind nieuwe lange scheuten zo horizontaal mogelijk (of in een waaier) aan het latwerk, 30–50 cm uit elkaar, met zacht bindmateriaal. Controleer bestaande banden." },
-        { "id": "bemesten-2", "titel": "Bemesten na eerste bloei", "van": 6, "tot": 7, "prioriteit": "moet", "uitleg": "Tweede gift na de eerste bloeigolf. Na begin augustus niet meer." },
-        { "id": "uitgebloeid", "titel": "Uitgebloeide bloemen afknippen", "van": 6, "tot": 9, "prioriteit": "kan", "herhaal": "wekelijks", "uitleg": "Bij een doorbloeier: uitgebloeide bloemen afknippen tot boven het eerste volgroeide blad. Bij een eenmaal bloeiende roos niet nodig (laat bottels zitten)." },
-        { "id": "water", "titel": "Water geven bij droogte", "van": 5, "tot": 9, "prioriteit": "moet", "herhaal": "wekelijks", "groep": "water", "uitleg": "Tegen de muur valt weinig regen: 1–2× per week 10 liter aan de voet, 's ochtends. Het eerste jaar extra belangrijk." },
+        { "id": "snoeien", "titel": "Snoeien", "van": 2, "tot": 3, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Jonge plant (jaar 1–2): alleen dood, beschadigd en dun hout weg; hoofdtakken niet inkorten. Gevestigde plant: hoofdtakken laten staan, de zijtakken die vorig jaar bloeiden terug tot 2–3 ogen, en elke 2–3 jaar 1 oude tak bij de grond weg. Niet bij vorst." },
+        { "id": "bemesten", "titel": "Bemesten", "van": 3, "tot": 4, "prioriteit": "moet", "soort": "bemesten", "uitleg": "Rozenmest of organische mest (ca. 70 g/m²), licht inwerken." },
+        { "id": "opbinden", "titel": "Nieuwe scheuten opbinden", "van": 4, "tot": 10, "prioriteit": "moet", "soort": "storm", "herhaal": "maandelijks", "uitleg": "Bind nieuwe lange scheuten zo horizontaal mogelijk (of in een waaier) aan het latwerk, 30–50 cm uit elkaar, met zacht bindmateriaal. Controleer bestaande banden." },
+        { "id": "bemesten-2", "titel": "Bemesten na eerste bloei", "van": 6, "tot": 7, "prioriteit": "moet", "soort": "bemesten", "uitleg": "Tweede gift na de eerste bloeigolf. Na begin augustus niet meer." },
+        { "id": "uitgebloeid", "titel": "Uitgebloeide bloemen afknippen", "van": 6, "tot": 9, "prioriteit": "kan", "soort": "snoeien", "herhaal": "wekelijks", "uitleg": "Bij een doorbloeier: uitgebloeide bloemen afknippen tot boven het eerste volgroeide blad. Bij een eenmaal bloeiende roos niet nodig (laat bottels zitten)." },
+        { "id": "water", "titel": "Water geven bij droogte", "van": 5, "tot": 9, "prioriteit": "moet", "soort": "water", "herhaal": "wekelijks", "groep": "water", "uitleg": "Tegen de muur valt weinig regen: 1–2× per week 10 liter aan de voet, 's ochtends. Het eerste jaar extra belangrijk." },
         { "id": "controle", "titel": "Sterroetdauw en meeldauw", "van": 4, "tot": 10, "prioriteit": "moet", "herhaal": "maandelijks", "groep": "controle", "uitleg": "Blad met zwarte vlekken of witte aanslag direct weghalen; kijk ook op luis." },
         { "id": "wildescheuten", "titel": "Wilde scheuten verwijderen", "van": 4, "tot": 9, "prioriteit": "kan", "herhaal": "maandelijks", "groep": "wildescheuten", "uitleg": "Trek scheuten die onder het entpunt uit de voet komen weg." },
-        { "id": "vastzetten", "titel": "Lange scheuten vastzetten", "van": 10, "tot": 11, "prioriteit": "kan", "uitleg": "Bind lange, losse scheuten vast of kort ze in, zodat de wind ze niet beschadigt." },
+        { "id": "vastzetten", "titel": "Lange scheuten vastzetten", "van": 10, "tot": 11, "prioriteit": "kan", "soort": "storm", "uitleg": "Bind lange, losse scheuten vast of kort ze in, zodat de wind ze niet beschadigt." },
         { "id": "blad-opruimen", "titel": "Afgevallen blad opruimen", "van": 10, "tot": 12, "prioriteit": "moet", "herhaal": "wekelijks", "groep": "blad", "uitleg": "Ruim blad onder en achter het latwerk op en voer het af (sterroetdauw)." },
         { "id": "mulchen", "titel": "Mulchen", "van": 11, "tot": 2, "prioriteit": "kan", "uitleg": "5 cm compost of goed verteerde mest rond de voet (10 cm vrij van de stengels), na het opruimen van het blad." }
       ]
@@ -273,10 +273,10 @@
       "taken": [
         { "id": "mulchen", "titel": "Boomspiegel mulchen", "van": 3, "tot": 3, "prioriteit": "kan", "uitleg": "Laag compost of bladcompost van 5 cm; stamvoet vrijhouden." },
         { "id": "wildescheuten", "titel": "Groene wildscheuten verwijderen", "van": 4, "tot": 9, "prioriteit": "moet", "herhaal": "maandelijks", "groep": "wildescheuten", "uitleg": "Groene scheuten uit de onderstam of de stamvoet direct wegknippen, anders overwoekeren ze de rode kroon." },
-        { "id": "water", "titel": "Water geven bij droogte (jonge boom)", "van": 5, "tot": 9, "prioriteit": "kan", "herhaal": "wekelijks", "groep": "water", "uitleg": "Zolang de boom jong is: bij droogte 1× per week 50–100 liter." },
-        { "id": "snoeien", "titel": "Snoeien en opkronen", "van": 8, "tot": 9, "prioriteit": "kan", "uitleg": "Beste moment (de boom bloedt dan het minst). Alleen dood, beschadigd of kruisend hout en concurrerende toppen weg; takken terugzetten tot de takkraag. Opkronen: elk jaar 1–2 lage takken weg, nooit meer dan 1/4 van de kroon per jaar." },
+        { "id": "water", "titel": "Water geven bij droogte (jonge boom)", "van": 5, "tot": 9, "prioriteit": "kan", "soort": "water", "herhaal": "wekelijks", "groep": "water", "uitleg": "Zolang de boom jong is: bij droogte 1× per week 50–100 liter." },
+        { "id": "snoeien", "titel": "Snoeien en opkronen", "van": 8, "tot": 9, "prioriteit": "kan", "soort": "snoeien", "uitleg": "Beste moment (de boom bloedt dan het minst). Alleen dood, beschadigd of kruisend hout en concurrerende toppen weg; takken terugzetten tot de takkraag. Opkronen: elk jaar 1–2 lage takken weg, nooit meer dan 1/4 van de kroon per jaar." },
         { "id": "blad", "titel": "Blad ruimen", "van": 10, "tot": 11, "prioriteit": "moet", "herhaal": "wekelijks", "groep": "blad", "uitleg": "Blad van gazon en paden halen. Bij zwarte teervlekken het blad afvoeren, niet composteren." },
-        { "id": "paal", "titel": "Boompaal en band controleren", "van": 11, "tot": 11, "prioriteit": "kan", "groep": "paal", "uitleg": "Banden losser zetten of verwijderen als de boom stevig staat, om ingroeien te voorkomen." },
+        { "id": "paal", "titel": "Boompaal en band controleren", "van": 11, "tot": 11, "prioriteit": "kan", "soort": "storm", "groep": "paal", "uitleg": "Banden losser zetten of verwijderen als de boom stevig staat, om ingroeien te voorkomen." },
         { "id": "niet-snoeien", "titel": "Niet snoeien (boom bloedt)", "van": 1, "tot": 5, "prioriteit": "niet", "uitleg": "In januari–mei stijgt de sap en bloedt de boom sterk uit snoeiwonden. Wacht tot augustus." }
       ]
     },
@@ -304,13 +304,13 @@
         "https://www.rhs.org.uk/plants/types/trees/pleached-arbours"
       ],
       "taken": [
-        { "id": "wintersnoei", "titel": "Wintersnoei (hoofdsnoei)", "van": 12, "tot": 2, "prioriteit": "moet", "uitleg": "Bij voorkeur in februari, zonder vorst. Alle eenjarige scheuten terugknippen tot 2–5 cm op de dakgesteltakken, zodat 'knotjes' ontstaan. Opgaande scheuten volledig weg." },
-        { "id": "aanbinden-winter", "titel": "Scheuten aanbinden aan frame", "van": 12, "tot": 2, "prioriteit": "kan", "uitleg": "Zolang het dak nog niet vol is: per open plek één goed geplaatste, horizontale scheut op lengte laten en losjes aan het frame binden in plaats van wegknippen." },
-        { "id": "bindmateriaal", "titel": "Bindmateriaal en frame controleren", "van": 11, "tot": 2, "prioriteit": "kan", "groep": "paal", "uitleg": "Banden losser zetten of vervangen om insnoering te voorkomen; controleer of het frame stevig staat." },
-        { "id": "water", "titel": "Water bij voorjaarsdroogte", "van": 4, "tot": 6, "prioriteit": "kan", "herhaal": "wekelijks", "groep": "water", "uitleg": "Bij een droog voorjaar wekelijks flink water geven." },
-        { "id": "aanbinden-zomer", "titel": "Jonge scheuten aanbinden", "van": 5, "tot": 8, "prioriteit": "kan", "uitleg": "Soepele nieuwe scheuten die het frame moeten vullen horizontaal vastbinden zolang ze buigzaam zijn." },
+        { "id": "wintersnoei", "titel": "Wintersnoei (hoofdsnoei)", "van": 12, "tot": 2, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Bij voorkeur in februari, zonder vorst. Alle eenjarige scheuten terugknippen tot 2–5 cm op de dakgesteltakken, zodat 'knotjes' ontstaan. Opgaande scheuten volledig weg." },
+        { "id": "aanbinden-winter", "titel": "Scheuten aanbinden aan frame", "van": 12, "tot": 2, "prioriteit": "kan", "soort": "storm", "uitleg": "Zolang het dak nog niet vol is: per open plek één goed geplaatste, horizontale scheut op lengte laten en losjes aan het frame binden in plaats van wegknippen." },
+        { "id": "bindmateriaal", "titel": "Bindmateriaal en frame controleren", "van": 11, "tot": 2, "prioriteit": "kan", "soort": "storm", "groep": "paal", "uitleg": "Banden losser zetten of vervangen om insnoering te voorkomen; controleer of het frame stevig staat." },
+        { "id": "water", "titel": "Water bij voorjaarsdroogte", "van": 4, "tot": 6, "prioriteit": "kan", "soort": "water", "herhaal": "wekelijks", "groep": "water", "uitleg": "Bij een droog voorjaar wekelijks flink water geven." },
+        { "id": "aanbinden-zomer", "titel": "Jonge scheuten aanbinden", "van": 5, "tot": 8, "prioriteit": "kan", "soort": "storm", "uitleg": "Soepele nieuwe scheuten die het frame moeten vullen horizontaal vastbinden zolang ze buigzaam zijn." },
         { "id": "stamscheuten", "titel": "Stamscheuten verwijderen", "van": 5, "tot": 9, "prioriteit": "moet", "herhaal": "maandelijks", "groep": "wildescheuten", "uitleg": "Uitlopers aan de stam en de stamvoet direct wegknippen." },
-        { "id": "zomersnoei", "titel": "Zomersnoei", "van": 6, "tot": 7, "prioriteit": "moet", "uitleg": "Rond de langste dag de opgaande en uitstekende scheuten wegknippen en de dakrand bijwerken, zodat het dak plat blijft en er licht op het terras komt." },
+        { "id": "zomersnoei", "titel": "Zomersnoei", "van": 6, "tot": 7, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Rond de langste dag de opgaande en uitstekende scheuten wegknippen en de dakrand bijwerken, zodat het dak plat blijft en er licht op het terras komt." },
         { "id": "blad", "titel": "Blad ruimen", "van": 10, "tot": 12, "prioriteit": "moet", "herhaal": "wekelijks", "groep": "blad", "uitleg": "Plataanblad verteert traag: van terras en gazon halen, composteren gemengd met ander blad." }
       ]
     },
@@ -338,12 +338,12 @@
         "https://www.vogelbescherming.nl/actueel/bericht/snoeien-in-het-broedseizoen-mag-dat"
       ],
       "taken": [
-        { "id": "verjongen", "titel": "Verjongen of smaller maken", "van": 12, "tot": 2, "prioriteit": "kan", "uitleg": "Alleen bij een te brede haag: in de winterrust (vorstvrij) één zijde hard terugzetten, de andere zijde een jaar later. Beuk loopt uit oud hout opnieuw uit." },
-        { "id": "bemesten", "titel": "Bemesten", "van": 3, "tot": 4, "prioriteit": "kan", "uitleg": "Organische haagmest of compost aan de voet strooien." },
-        { "id": "water", "titel": "Water geven bij droogte", "van": 5, "tot": 8, "prioriteit": "kan", "herhaal": "wekelijks", "groep": "water", "uitleg": "Vooral langs de verharding: 1× per week grondig water." },
-        { "id": "knippen-juni", "titel": "Eerste lichte knipbeurt (optioneel)", "van": 6, "tot": 6, "prioriteit": "kan", "uitleg": "Rond de langste dag, als je een strakkere haag wilt. Alleen na grondige nestcontrole; anders overslaan tot na 15 juli." },
-        { "id": "knippen", "titel": "Hoofdknipbeurt", "van": 7, "tot": 8, "prioriteit": "moet", "uitleg": "Na 15 juli tot eind augustus, met heggenschaar en spanlijn, op een bewolkte dag. Door in de nazomer te knippen houdt de haag het bruine winterblad vast. Eerst controleren op nesten." },
-        { "id": "correctie", "titel": "Correctieknip", "van": 9, "tot": 9, "prioriteit": "kan", "uitleg": "Uiterlijk half september de laatste uitschieters bijwerken, zodat de nieuwe groei vóór de vorst afrijpt." },
+        { "id": "verjongen", "titel": "Verjongen of smaller maken", "van": 12, "tot": 2, "prioriteit": "kan", "soort": "snoeien", "uitleg": "Alleen bij een te brede haag: in de winterrust (vorstvrij) één zijde hard terugzetten, de andere zijde een jaar later. Beuk loopt uit oud hout opnieuw uit." },
+        { "id": "bemesten", "titel": "Bemesten", "van": 3, "tot": 4, "prioriteit": "kan", "soort": "bemesten", "uitleg": "Organische haagmest of compost aan de voet strooien." },
+        { "id": "water", "titel": "Water geven bij droogte", "van": 5, "tot": 8, "prioriteit": "kan", "soort": "water", "herhaal": "wekelijks", "groep": "water", "uitleg": "Vooral langs de verharding: 1× per week grondig water." },
+        { "id": "knippen-juni", "titel": "Eerste lichte knipbeurt (optioneel)", "van": 6, "tot": 6, "prioriteit": "kan", "soort": "snoeien", "uitleg": "Rond de langste dag, als je een strakkere haag wilt. Alleen na grondige nestcontrole; anders overslaan tot na 15 juli." },
+        { "id": "knippen", "titel": "Hoofdknipbeurt", "van": 7, "tot": 8, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Na 15 juli tot eind augustus, met heggenschaar en spanlijn, op een bewolkte dag. Door in de nazomer te knippen houdt de haag het bruine winterblad vast. Eerst controleren op nesten." },
+        { "id": "correctie", "titel": "Correctieknip", "van": 9, "tot": 9, "prioriteit": "kan", "soort": "snoeien", "uitleg": "Uiterlijk half september de laatste uitschieters bijwerken, zodat de nieuwe groei vóór de vorst afrijpt." },
         { "id": "stoep", "titel": "Stoep vrijhouden", "van": 5, "tot": 9, "prioriteit": "kan", "herhaal": "maandelijks", "uitleg": "Takken die boven het trottoir uitsteken bijknippen; de gemeente vraagt een vrije doorgang." },
         { "id": "broedseizoen", "titel": "Niet knippen in het broedseizoen", "van": 4, "tot": 6, "prioriteit": "niet", "uitleg": "Tussen 15 maart en 15 juli geen hagen knippen: nesten zijn wettelijk beschermd." }
       ]
@@ -373,11 +373,11 @@
       ],
       "taken": [
         { "id": "sneeuw", "titel": "Natte sneeuw afschudden", "van": 12, "tot": 2, "prioriteit": "kan", "uitleg": "Klop natte sneeuw van de brede haag om uitscheuren van takken te voorkomen." },
-        { "id": "voorjaarssnoei", "titel": "Voorjaarssnoei (vóór 15 maart)", "van": 2, "tot": 3, "prioriteit": "kan", "uitleg": "Vormcorrectie vóór het broedseizoen, voor een dichtere haag. Ook het moment voor flink verjongen (tot in oud hout, eventueel 1/3 per jaar). Niet bij vorst, regen of felle zon." },
-        { "id": "bemesten", "titel": "Bemesten", "van": 3, "tot": 4, "prioriteit": "kan", "uitleg": "Haagmest of compost aan de voet." },
+        { "id": "voorjaarssnoei", "titel": "Voorjaarssnoei (vóór 15 maart)", "van": 2, "tot": 3, "prioriteit": "kan", "soort": "snoeien", "uitleg": "Vormcorrectie vóór het broedseizoen, voor een dichtere haag. Ook het moment voor flink verjongen (tot in oud hout, eventueel 1/3 per jaar). Niet bij vorst, regen of felle zon." },
+        { "id": "bemesten", "titel": "Bemesten", "van": 3, "tot": 4, "prioriteit": "kan", "soort": "bemesten", "uitleg": "Haagmest of compost aan de voet." },
         { "id": "aaltjes", "titel": "Aaltjes tegen taxuskever", "van": 4, "tot": 5, "prioriteit": "kan", "uitleg": "Alleen als je kartelvraat aan de bladranden ziet. Herhalen in augustus–september." },
-        { "id": "water", "titel": "Water geven bij droogte", "van": 5, "tot": 8, "prioriteit": "kan", "herhaal": "wekelijks", "groep": "water", "uitleg": "Wekelijks grondig bij de voet, niet over het blad (schimmels)." },
-        { "id": "hoofdsnoei", "titel": "Hoofdsnoeibeurt", "van": 7, "tot": 9, "prioriteit": "moet", "uitleg": "Tussen 15 juli en half september. Bij voorkeur tak voor tak met een scherpe snoeischaar, net boven een blad, zodat er geen doorgesneden bladeren bruin worden. Met een heggenschaar: daarna de doorgeknipte bladeren uitknippen. Eerst controleren op nesten." },
+        { "id": "water", "titel": "Water geven bij droogte", "van": 5, "tot": 8, "prioriteit": "kan", "soort": "water", "herhaal": "wekelijks", "groep": "water", "uitleg": "Wekelijks grondig bij de voet, niet over het blad (schimmels)." },
+        { "id": "hoofdsnoei", "titel": "Hoofdsnoeibeurt", "van": 7, "tot": 9, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Tussen 15 juli en half september. Bij voorkeur tak voor tak met een scherpe snoeischaar, net boven een blad, zodat er geen doorgesneden bladeren bruin worden. Met een heggenschaar: daarna de doorgeknipte bladeren uitknippen. Eerst controleren op nesten." },
         { "id": "broedseizoen", "titel": "Niet knippen in het broedseizoen", "van": 4, "tot": 6, "prioriteit": "niet", "uitleg": "Tussen 15 maart en 15 juli geen hagen knippen: nesten zijn wettelijk beschermd." }
       ]
     },
@@ -405,11 +405,11 @@
         "https://www.gamma.nl/klusadvies/a/sering-snoeien"
       ],
       "taken": [
-        { "id": "uitgebloeid", "titel": "Uitgebloeide pluimen afknippen", "van": 5, "tot": 6, "prioriteit": "moet", "uitleg": "Direct na de bloei de uitgebloeide trossen afknippen tot de eerste zijscheut of het knoppenpaar. Voorzichtig: de jonge scheuten ernaast dragen de bloei van volgend jaar." },
-        { "id": "vormsnoei", "titel": "Vormsnoei en gefaseerd verjongen", "van": 6, "tot": 6, "prioriteit": "kan", "uitleg": "Binnen 2–3 weken na de bloei uitstekende takken inkorten (max. 1/3). Bij een oude struik elk jaar 1–2 van de oudste, dikste stammen laag bij de grond afzagen; na 3 jaar is de struik vernieuwd." },
-        { "id": "bemesten", "titel": "Bemesten", "van": 6, "tot": 6, "prioriteit": "kan", "uitleg": "Na de bloei compost of organische mest aan de voet." },
+        { "id": "uitgebloeid", "titel": "Uitgebloeide pluimen afknippen", "van": 5, "tot": 6, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Direct na de bloei de uitgebloeide trossen afknippen tot de eerste zijscheut of het knoppenpaar. Voorzichtig: de jonge scheuten ernaast dragen de bloei van volgend jaar." },
+        { "id": "vormsnoei", "titel": "Vormsnoei en gefaseerd verjongen", "van": 6, "tot": 6, "prioriteit": "kan", "soort": "snoeien", "uitleg": "Binnen 2–3 weken na de bloei uitstekende takken inkorten (max. 1/3). Bij een oude struik elk jaar 1–2 van de oudste, dikste stammen laag bij de grond afzagen; na 3 jaar is de struik vernieuwd." },
+        { "id": "bemesten", "titel": "Bemesten", "van": 6, "tot": 6, "prioriteit": "kan", "soort": "bemesten", "uitleg": "Na de bloei compost of organische mest aan de voet." },
         { "id": "opslag", "titel": "Wortelopslag verwijderen", "van": 5, "tot": 9, "prioriteit": "moet", "herhaal": "maandelijks", "groep": "wildescheuten", "uitleg": "Uitlopers uit de onderstam en wortels bij de voet wegtrekken of afsteken." },
-        { "id": "water", "titel": "Water bij lange droogte", "van": 7, "tot": 8, "prioriteit": "kan", "herhaal": "wekelijks", "groep": "water", "uitleg": "Belangrijk omdat dan de bloemknoppen voor volgend jaar worden aangelegd." },
+        { "id": "water", "titel": "Water bij lange droogte", "van": 7, "tot": 8, "prioriteit": "kan", "soort": "water", "herhaal": "wekelijks", "groep": "water", "uitleg": "Belangrijk omdat dan de bloemknoppen voor volgend jaar worden aangelegd." },
         { "id": "niet-snoeien", "titel": "Niet meer snoeien", "van": 8, "tot": 3, "prioriteit": "niet", "uitleg": "Na juni niet meer snoeien: de bloemknoppen voor volgend jaar zitten al aan de takken. (Uitzondering: een totaal verwaarloosde struik in de winter terugzetten op 50 cm; dan 1–3 jaar geen bloei.)" }
       ]
     },
@@ -437,10 +437,10 @@
         "https://www.bosch-diy.com/nl/nl/all-about-diy/lavendel-op-de-juiste-manier-snoeien-en-vermeerderen"
       ],
       "taken": [
-        { "id": "voorjaarssnoei", "titel": "Voorjaarssnoei", "van": 3, "tot": 4, "prioriteit": "moet", "uitleg": "Eind maart tot half april, als je nieuwe groene scheutjes ziet. Tot 2/3 van het groene deel terugknippen, maar altijd een paar cm groen blad laten staan. Nooit in het kale, oude hout knippen." },
-        { "id": "vervangen", "titel": "Vervangen door jonge plant", "van": 4, "tot": 4, "prioriteit": "kan", "uitleg": "Valt de verhoute struik uit elkaar? Vervang hem door een jonge plant of door je eigen stekjes." },
+        { "id": "voorjaarssnoei", "titel": "Voorjaarssnoei", "van": 3, "tot": 4, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Eind maart tot half april, als je nieuwe groene scheutjes ziet. Tot 2/3 van het groene deel terugknippen, maar altijd een paar cm groen blad laten staan. Nooit in het kale, oude hout knippen." },
+        { "id": "vervangen", "titel": "Vervangen door jonge plant", "van": 4, "tot": 4, "prioriteit": "kan", "soort": "zaaien", "uitleg": "Valt de verhoute struik uit elkaar? Vervang hem door een jonge plant of door je eigen stekjes." },
         { "id": "oogsten", "titel": "Bloemen oogsten", "van": 6, "tot": 8, "prioriteit": "kan", "uitleg": "Voor drogen knippen als de onderste bloemetjes net open zijn." },
-        { "id": "na-bloei", "titel": "Snoeien na de bloei", "van": 8, "tot": 8, "prioriteit": "moet", "uitleg": "Direct na de bloei de uitgebloeide stelen plus ca. 2,5 cm blad wegknippen (ca. 1/3), zodat de plant compact blijft. Uiterlijk begin september." },
+        { "id": "na-bloei", "titel": "Snoeien na de bloei", "van": 8, "tot": 8, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Direct na de bloei de uitgebloeide stelen plus ca. 2,5 cm blad wegknippen (ca. 1/3), zodat de plant compact blijft. Uiterlijk begin september." },
         { "id": "stekken", "titel": "Stekken nemen", "van": 8, "tot": 9, "prioriteit": "kan", "uitleg": "Halfhoutige stekjes nemen als vervanging voor de grote, verhoute struik." },
         { "id": "niet-snoeien", "titel": "Niet meer snoeien", "van": 9, "tot": 2, "prioriteit": "niet", "uitleg": "Snoei in herfst en winter maakt de plant vorstgevoelig. Laat de bloemstelen eventueel staan als winterstructuur." }
       ]
@@ -468,11 +468,11 @@
         "https://plants.ces.ncsu.edu/plants/liriope-muscari"
       ],
       "taken": [
-        { "id": "terugknippen", "titel": "Oud blad terugknippen", "van": 3, "tot": 4, "prioriteit": "moet", "uitleg": "Knip het oude, verweerde blad vóór de nieuwe uitloop tot vlak boven de grond terug. Wacht niet te lang, anders knip je de nieuwe scheuten mee." },
+        { "id": "terugknippen", "titel": "Oud blad terugknippen", "van": 3, "tot": 4, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Knip het oude, verweerde blad vóór de nieuwe uitloop tot vlak boven de grond terug. Wacht niet te lang, anders knip je de nieuwe scheuten mee." },
         { "id": "mulchen", "titel": "Mulchen", "van": 3, "tot": 4, "prioriteit": "kan", "uitleg": "5–7 cm compost of bladaarde rond de pollen; onder de haag houdt dit vocht vast en onderdrukt het onkruid." },
         { "id": "slakken", "titel": "Slakkencontrole", "van": 4, "tot": 5, "prioriteit": "kan", "groep": "controle", "uitleg": "Controleer de jonge bladuitloop op slakkenvraat en verwijder slakken." },
-        { "id": "scheuren", "titel": "Scheuren (om de 3–4 jaar)", "van": 4, "tot": 5, "prioriteit": "kan", "uitleg": "Grote pollen opgraven en delen; daarna goed water geven." },
-        { "id": "water", "titel": "Water bij langdurige droogte", "van": 6, "tot": 8, "prioriteit": "kan", "herhaal": "wekelijks", "groep": "water", "uitleg": "Vooral onder de beukenhaag, die veel vocht wegneemt." },
+        { "id": "scheuren", "titel": "Scheuren (om de 3–4 jaar)", "van": 4, "tot": 5, "prioriteit": "kan", "soort": "zaaien", "uitleg": "Grote pollen opgraven en delen; daarna goed water geven." },
+        { "id": "water", "titel": "Water bij langdurige droogte", "van": 6, "tot": 8, "prioriteit": "kan", "soort": "water", "herhaal": "wekelijks", "groep": "water", "uitleg": "Vooral onder de beukenhaag, die veel vocht wegneemt." },
         { "id": "niet-knippen", "titel": "Niet terugknippen", "van": 10, "tot": 2, "prioriteit": "niet", "uitleg": "Het blad is wintergroen en blijft staan. Knip pas in maart–april." }
       ]
     },
@@ -499,11 +499,11 @@
         "https://hessenhof.nl/genera/vinca-maagdenpalm-vinc"
       ],
       "taken": [
-        { "id": "terugknippen", "titel": "Terugknippen / verjongen", "van": 3, "tot": 4, "prioriteit": "kan", "uitleg": "Lange stengels terugknippen tot 5–10 cm (een heggenschaar mag) en het snoeisel wegharken. Hoeft niet elk jaar." },
+        { "id": "terugknippen", "titel": "Terugknippen / verjongen", "van": 3, "tot": 4, "prioriteit": "kan", "soort": "snoeien", "uitleg": "Lange stengels terugknippen tot 5–10 cm (een heggenschaar mag) en het snoeisel wegharken. Hoeft niet elk jaar." },
         { "id": "beperken", "titel": "Uitbreiding beperken", "van": 3, "tot": 4, "prioriteit": "moet", "uitleg": "Knip of steek uitlopers weg die buiten het gewenste vlak of in andere planten groeien." },
-        { "id": "stekken", "titel": "Kale plekken opvullen", "van": 4, "tot": 5, "prioriteit": "kan", "uitleg": "Gewortelde uitlopers afsteken en elders opplanten. Kan ook in september–oktober." },
-        { "id": "vormsnoei", "titel": "Lichte vormsnoei na bloei", "van": 5, "tot": 6, "prioriteit": "kan", "uitleg": "Licht bijknippen om het tapijt compact te houden." },
-        { "id": "water", "titel": "Water bij langdurige droogte", "van": 6, "tot": 8, "prioriteit": "kan", "herhaal": "wekelijks", "groep": "water", "uitleg": "Vooral onder heesters die het vocht wegnemen." }
+        { "id": "stekken", "titel": "Kale plekken opvullen", "van": 4, "tot": 5, "prioriteit": "kan", "soort": "zaaien", "uitleg": "Gewortelde uitlopers afsteken en elders opplanten. Kan ook in september–oktober." },
+        { "id": "vormsnoei", "titel": "Lichte vormsnoei na bloei", "van": 5, "tot": 6, "prioriteit": "kan", "soort": "snoeien", "uitleg": "Licht bijknippen om het tapijt compact te houden." },
+        { "id": "water", "titel": "Water bij langdurige droogte", "van": 6, "tot": 8, "prioriteit": "kan", "soort": "water", "herhaal": "wekelijks", "groep": "water", "uitleg": "Vooral onder heesters die het vocht wegnemen." }
       ]
     },
     {
@@ -530,11 +530,11 @@
         "https://www.tuinadvies.be/planten/geranium-oxonianum/ooievaarsbek/"
       ],
       "taken": [
-        { "id": "opruimen", "titel": "Oud blad opruimen", "van": 3, "tot": 4, "prioriteit": "moet", "uitleg": "Knip dood blad en oude stengels vlak boven de grond af, vóór of tijdens de nieuwe uitloop." },
-        { "id": "scheuren", "titel": "Scheuren (om de 3–5 jaar)", "van": 4, "tot": 4, "prioriteit": "kan", "uitleg": "Pollen opgraven en delen; de jonge buitendelen terugplanten. Kan ook in september–oktober." },
+        { "id": "opruimen", "titel": "Oud blad opruimen", "van": 3, "tot": 4, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Knip dood blad en oude stengels vlak boven de grond af, vóór of tijdens de nieuwe uitloop." },
+        { "id": "scheuren", "titel": "Scheuren (om de 3–5 jaar)", "van": 4, "tot": 4, "prioriteit": "kan", "soort": "zaaien", "uitleg": "Pollen opgraven en delen; de jonge buitendelen terugplanten. Kan ook in september–oktober." },
         { "id": "beperken", "titel": "Uitbreiding beperken", "van": 5, "tot": 9, "prioriteit": "kan", "herhaal": "maandelijks", "uitleg": "Steek randen af die buurplanten overgroeien." },
-        { "id": "terugknippen", "titel": "Terugknippen na eerste bloei", "van": 6, "tot": 7, "prioriteit": "moet", "uitleg": "Knip de hele plant na de eerste bloeigolf tot 5–10 cm boven de grond terug. Binnen enkele weken komen vers blad en een tweede bloei." },
-        { "id": "water", "titel": "Water na het terugknippen", "van": 6, "tot": 8, "prioriteit": "kan", "herhaal": "wekelijks", "groep": "water", "uitleg": "Bij droog weer na de zomersnoei grondig water geven, zodat de plant snel opnieuw uitloopt." },
+        { "id": "terugknippen", "titel": "Terugknippen na eerste bloei", "van": 6, "tot": 7, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Knip de hele plant na de eerste bloeigolf tot 5–10 cm boven de grond terug. Binnen enkele weken komen vers blad en een tweede bloei." },
+        { "id": "water", "titel": "Water na het terugknippen", "van": 6, "tot": 8, "prioriteit": "kan", "soort": "water", "herhaal": "wekelijks", "groep": "water", "uitleg": "Bij droog weer na de zomersnoei grondig water geven, zodat de plant snel opnieuw uitloopt." },
         { "id": "najaar", "titel": "Lichte najaarsopruiming", "van": 10, "tot": 11, "prioriteit": "kan", "uitleg": "Lelijk of beschimmeld blad mag weg; de rest kan blijven liggen als bodembescherming." }
       ]
     },
@@ -563,12 +563,12 @@
         "https://www.gartenjournal.net/prachtkerze-winterhart"
       ],
       "taken": [
-        { "id": "terugknippen", "titel": "Terugknippen", "van": 4, "tot": 4, "prioriteit": "moet", "uitleg": "Als de strenge vorst voorbij is (half/eind april): oude stengels tot ca. 10 cm boven de grond terugknippen. Pas als je nieuwe uitloop ziet, weet je dat de plant de winter heeft overleefd." },
-        { "id": "inboeten", "titel": "Uitgevallen planten vervangen", "van": 4, "tot": 5, "prioriteit": "kan", "uitleg": "In het voorjaar vervangen, niet in het najaar (meer kans op wortelrot)." },
-        { "id": "zaailingen", "titel": "Zaailingen behouden of verplanten", "van": 5, "tot": 6, "prioriteit": "kan", "uitleg": "Jonge zaailingen bewaren als vervanging voor de kortlevende moederplant." },
+        { "id": "terugknippen", "titel": "Terugknippen", "van": 4, "tot": 4, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Als de strenge vorst voorbij is (half/eind april): oude stengels tot ca. 10 cm boven de grond terugknippen. Pas als je nieuwe uitloop ziet, weet je dat de plant de winter heeft overleefd." },
+        { "id": "inboeten", "titel": "Uitgevallen planten vervangen", "van": 4, "tot": 5, "prioriteit": "kan", "soort": "zaaien", "uitleg": "In het voorjaar vervangen, niet in het najaar (meer kans op wortelrot)." },
+        { "id": "zaailingen", "titel": "Zaailingen behouden of verplanten", "van": 5, "tot": 6, "prioriteit": "kan", "soort": "zaaien", "uitleg": "Jonge zaailingen bewaren als vervanging voor de kortlevende moederplant." },
         { "id": "stekken", "titel": "Stekken als reserve", "van": 6, "tot": 7, "prioriteit": "kan", "uitleg": "Stekken van ca. 10 cm van jonge scheuten, voor het geval de plant uitvalt." },
-        { "id": "uitgebloeid", "titel": "Uitgebloeide aren inkorten", "van": 7, "tot": 8, "prioriteit": "kan", "uitleg": "Lange, uitgebloeide aren tot een zijscheut inkorten; houdt de plant compact en verlengt de bloei." },
-        { "id": "winterbescherming", "titel": "Lichte winterbescherming", "van": 11, "tot": 12, "prioriteit": "kan", "uitleg": "Een losse laag blad of takken rond de voet (geen natte, dichte mulch); vliesdoek alleen bij strenge vorst." },
+        { "id": "uitgebloeid", "titel": "Uitgebloeide aren inkorten", "van": 7, "tot": 8, "prioriteit": "kan", "soort": "snoeien", "uitleg": "Lange, uitgebloeide aren tot een zijscheut inkorten; houdt de plant compact en verlengt de bloei." },
+        { "id": "winterbescherming", "titel": "Lichte winterbescherming", "van": 11, "tot": 12, "prioriteit": "kan", "soort": "vorst", "uitleg": "Een losse laag blad of takken rond de voet (geen natte, dichte mulch); vliesdoek alleen bij strenge vorst." },
         { "id": "niet-knippen", "titel": "Niet terugknippen in najaar", "van": 10, "tot": 3, "prioriteit": "niet", "uitleg": "Laat de stengels de winter over staan; ze beschermen de wortelhals." }
       ]
     },
@@ -596,9 +596,9 @@
         "https://www.intratuin.nl/brandkruid-phlomis-russeliana.html"
       ],
       "taken": [
-        { "id": "terugknippen", "titel": "Oude stengels terugknippen", "van": 3, "tot": 3, "prioriteit": "moet", "uitleg": "Knip de oude bloeistengels tot vlak boven de nieuwe bladrozetten af, net als die beginnen uit te lopen." },
-        { "id": "scheuren", "titel": "Scheuren (om de ~3 jaar)", "van": 3, "tot": 4, "prioriteit": "kan", "uitleg": "Grote pollen delen, of afsteken als de plant te ver uitbreidt." },
-        { "id": "vorstschade", "titel": "Vorstschade wegknippen", "van": 4, "tot": 5, "prioriteit": "kan", "uitleg": "Vorstschade en zwakke scheuten tot gezond weefsel wegknippen; lelijk oud blad weg." },
+        { "id": "terugknippen", "titel": "Oude stengels terugknippen", "van": 3, "tot": 3, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Knip de oude bloeistengels tot vlak boven de nieuwe bladrozetten af, net als die beginnen uit te lopen." },
+        { "id": "scheuren", "titel": "Scheuren (om de ~3 jaar)", "van": 3, "tot": 4, "prioriteit": "kan", "soort": "zaaien", "uitleg": "Grote pollen delen, of afsteken als de plant te ver uitbreidt." },
+        { "id": "vorstschade", "titel": "Vorstschade wegknippen", "van": 4, "tot": 5, "prioriteit": "kan", "soort": "snoeien", "uitleg": "Vorstschade en zwakke scheuten tot gezond weefsel wegknippen; lelijk oud blad weg." },
         { "id": "beperken", "titel": "Uitbreiding beperken", "van": 5, "tot": 9, "prioriteit": "kan", "uitleg": "Wortelstokken en zaailingen die te ver uitlopen afsteken." },
         { "id": "laten-staan", "titel": "Zaadkransen laten staan", "van": 9, "tot": 2, "prioriteit": "niet", "uitleg": "Laat de uitgebloeide stengels met zaadkransen de hele winter staan, voor de structuur en voor insecten en vogels." }
       ]
@@ -627,11 +627,11 @@
         "https://www.tuinadvies.be/planten/vaste-planten/echinops-ritro-veitchs-blue/kogeldistel/"
       ],
       "taken": [
-        { "id": "terugknippen", "titel": "Terugknippen", "van": 2, "tot": 3, "prioriteit": "moet", "uitleg": "Oude stengels tot vlak boven de grond afknippen, vóór de nieuwe uitloop. Draag handschoenen (stekelig)." },
+        { "id": "terugknippen", "titel": "Terugknippen", "van": 2, "tot": 3, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Oude stengels tot vlak boven de grond afknippen, vóór de nieuwe uitloop. Draag handschoenen (stekelig)." },
         { "id": "zaailingen", "titel": "Zaailingen wieden", "van": 3, "tot": 4, "prioriteit": "kan", "uitleg": "Zaait zich gemakkelijk uit: ongewenste zaailingen jong uittrekken." },
-        { "id": "steunen", "titel": "Steunen", "van": 5, "tot": 6, "prioriteit": "kan", "uitleg": "Alleen hoge exemplaren op een winderige plek tijdig steunen." },
-        { "id": "uitgebloeid", "titel": "Deel van de bollen afknippen", "van": 8, "tot": 9, "prioriteit": "kan", "uitleg": "Na de eerste bloei een deel van de uitgebloeide stengels terugknippen (soms nabloei, minder uitzaai). Laat genoeg zaadhoofden staan voor de vogels." },
-        { "id": "meeldauw", "titel": "Meeldauwblad wegknippen", "van": 8, "tot": 10, "prioriteit": "kan", "groep": "controle", "uitleg": "Sterk aangetast onderblad wegknippen en afvoeren; afgevallen aangetast blad weghalen." },
+        { "id": "steunen", "titel": "Steunen", "van": 5, "tot": 6, "prioriteit": "kan", "soort": "storm", "uitleg": "Alleen hoge exemplaren op een winderige plek tijdig steunen." },
+        { "id": "uitgebloeid", "titel": "Deel van de bollen afknippen", "van": 8, "tot": 9, "prioriteit": "kan", "soort": "snoeien", "uitleg": "Na de eerste bloei een deel van de uitgebloeide stengels terugknippen (soms nabloei, minder uitzaai). Laat genoeg zaadhoofden staan voor de vogels." },
+        { "id": "meeldauw", "titel": "Meeldauwblad wegknippen", "van": 8, "tot": 10, "prioriteit": "kan", "soort": "snoeien", "groep": "controle", "uitleg": "Sterk aangetast onderblad wegknippen en afvoeren; afgevallen aangetast blad weghalen." },
         { "id": "laten-staan", "titel": "Zaadhoofden laten staan", "van": 10, "tot": 2, "prioriteit": "niet", "uitleg": "Stengels en zaadbollen in de winter laten staan: structuur en voer voor vinken." }
       ]
     },
@@ -659,10 +659,10 @@
         "https://www.hessenhof.nl/al/s494.html"
       ],
       "taken": [
-        { "id": "terugknippen", "titel": "Terugknippen", "van": 2, "tot": 3, "prioriteit": "moet", "uitleg": "Oude stengels vlak boven de grond afknippen, vóór de nieuwe vlezige knoppen uitlopen." },
-        { "id": "scheuren", "titel": "Scheuren (om de 3–4 jaar)", "van": 3, "tot": 4, "prioriteit": "kan", "uitleg": "Als het hart openvalt: delen (elk stuk met meerdere scheuten), of de kluit met een spitvork licht opheffen." },
+        { "id": "terugknippen", "titel": "Terugknippen", "van": 2, "tot": 3, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Oude stengels vlak boven de grond afknippen, vóór de nieuwe vlezige knoppen uitlopen." },
+        { "id": "scheuren", "titel": "Scheuren (om de 3–4 jaar)", "van": 3, "tot": 4, "prioriteit": "kan", "soort": "zaaien", "uitleg": "Als het hart openvalt: delen (elk stuk met meerdere scheuten), of de kluit met een spitvork licht opheffen." },
         { "id": "slakken", "titel": "Slakkencontrole", "van": 4, "tot": 5, "prioriteit": "kan", "groep": "controle", "uitleg": "Jonge uitloop controleren op slakkenvraat." },
-        { "id": "chelsea-chop", "titel": "Chelsea chop", "van": 5, "tot": 6, "prioriteit": "kan", "uitleg": "Rond eind mei (uiterlijk ~20 juni) de stengels met 1/3 tot 1/2 inkorten. De plant wordt compacter, valt niet open en bloeit iets later." },
+        { "id": "chelsea-chop", "titel": "Chelsea chop", "van": 5, "tot": 6, "prioriteit": "kan", "soort": "snoeien", "uitleg": "Rond eind mei (uiterlijk ~20 juni) de stengels met 1/3 tot 1/2 inkorten. De plant wordt compacter, valt niet open en bloeit iets later." },
         { "id": "laten-staan", "titel": "Bloeischermen laten staan", "van": 10, "tot": 2, "prioriteit": "niet", "uitleg": "Laat de uitgebloeide stengels en schermen de winter over staan: winterbeeld en schuilplaats voor nuttige insecten." }
       ]
     },
@@ -691,10 +691,10 @@
         "https://plants.ces.ncsu.edu/plants/cenchrus-alopecuroides-moudry/common-name/black-fountain-grass/"
       ],
       "taken": [
-        { "id": "terugknippen", "titel": "Terugknippen", "van": 3, "tot": 4, "prioriteit": "moet", "uitleg": "Eind maart–half april, vóór of net als de nieuwe groene sprieten verschijnen: de hele pol tot 10–15 cm boven de grond afknippen. Pas op voor de jonge scheuten." },
+        { "id": "terugknippen", "titel": "Terugknippen", "van": 3, "tot": 4, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Eind maart–half april, vóór of net als de nieuwe groene sprieten verschijnen: de hele pol tot 10–15 cm boven de grond afknippen. Pas op voor de jonge scheuten." },
         { "id": "uitharken", "titel": "Oud materiaal uitharken", "van": 4, "tot": 5, "prioriteit": "kan", "uitleg": "Dode halmen uit het hart kammen voor licht en lucht." },
-        { "id": "scheuren", "titel": "Scheuren", "van": 5, "tot": 6, "prioriteit": "kan", "uitleg": "Grote of in het midden kale pollen delen terwijl het gras actief groeit; buitenste deel terugplanten en goed water geven." },
-        { "id": "water", "titel": "Water bij langdurige droogte", "van": 6, "tot": 8, "prioriteit": "kan", "herhaal": "wekelijks", "groep": "water", "uitleg": "Vooral jonge aanplant." },
+        { "id": "scheuren", "titel": "Scheuren", "van": 5, "tot": 6, "prioriteit": "kan", "soort": "zaaien", "uitleg": "Grote of in het midden kale pollen delen terwijl het gras actief groeit; buitenste deel terugplanten en goed water geven." },
+        { "id": "water", "titel": "Water bij langdurige droogte", "van": 6, "tot": 8, "prioriteit": "kan", "soort": "water", "herhaal": "wekelijks", "groep": "water", "uitleg": "Vooral jonge aanplant." },
         { "id": "zaailingen", "titel": "Zaailingen beperken", "van": 9, "tot": 11, "prioriteit": "kan", "uitleg": "Zie je veel zaailingen in het gazon? Knip een deel van de pluimen vóór de zaadrijping weg." },
         { "id": "niet-knippen", "titel": "Niet terugknippen in najaar", "van": 10, "tot": 3, "prioriteit": "niet", "uitleg": "Laat blad en pluimen de winter over staan: het oude blad isoleert het hart tegen vorst en nattigheid." }
       ]
@@ -723,20 +723,20 @@
         "https://www.test-aankoop.be/woning-energie/tuin/dossier/onderhoud-gazon"
       ],
       "taken": [
-        { "id": "eerste-maaibeurt", "titel": "Eerste maaibeurt", "van": 3, "tot": 4, "prioriteit": "moet", "uitleg": "Zodra het gras groeit: hoog maaien op 5–6 cm, daarna geleidelijk lager." },
-        { "id": "voorjaarsbemesting", "titel": "Voorjaarsbemesting", "van": 3, "tot": 4, "prioriteit": "moet", "uitleg": "Na de eerste maaibeurt organische gazonmest strooien." },
-        { "id": "maaien", "titel": "Maaien", "van": 4, "tot": 10, "prioriteit": "moet", "herhaal": "wekelijks", "uitleg": "Wekelijks op 3,5–5 cm. Nooit meer dan 1/3 van de grashoogte in één keer." },
-        { "id": "verticuteren", "titel": "Verticuteren", "van": 4, "tot": 5, "prioriteit": "kan", "uitleg": "Bij mos of vilt: eerst kort maaien, dan in de lengte en de breedte verticuteren (max. ca. 5 mm diep). Alleen als het gras actief groeit." },
-        { "id": "doorzaaien-voorjaar", "titel": "Kale plekken doorzaaien", "van": 4, "tot": 5, "prioriteit": "kan", "uitleg": "Na het verticuteren herstelgraszaad inzaaien, aandrukken en 3 weken vochtig houden." },
+        { "id": "eerste-maaibeurt", "titel": "Eerste maaibeurt", "van": 3, "tot": 4, "prioriteit": "moet", "soort": "maaien", "uitleg": "Zodra het gras groeit: hoog maaien op 5–6 cm, daarna geleidelijk lager." },
+        { "id": "voorjaarsbemesting", "titel": "Voorjaarsbemesting", "van": 3, "tot": 4, "prioriteit": "moet", "soort": "bemesten", "uitleg": "Na de eerste maaibeurt organische gazonmest strooien." },
+        { "id": "maaien", "titel": "Maaien", "van": 4, "tot": 10, "prioriteit": "moet", "soort": "maaien", "herhaal": "wekelijks", "uitleg": "Wekelijks op 3,5–5 cm. Nooit meer dan 1/3 van de grashoogte in één keer." },
+        { "id": "verticuteren", "titel": "Verticuteren", "van": 4, "tot": 5, "prioriteit": "kan", "soort": "zaaien", "uitleg": "Bij mos of vilt: eerst kort maaien, dan in de lengte en de breedte verticuteren (max. ca. 5 mm diep). Alleen als het gras actief groeit." },
+        { "id": "doorzaaien-voorjaar", "titel": "Kale plekken doorzaaien", "van": 4, "tot": 5, "prioriteit": "kan", "soort": "zaaien", "uitleg": "Na het verticuteren herstelgraszaad inzaaien, aandrukken en 3 weken vochtig houden." },
         { "id": "graskanten", "titel": "Graskanten bijsteken", "van": 5, "tot": 9, "prioriteit": "kan", "uitleg": "Kanten langs borders en paden 1–2× per seizoen afsteken." },
-        { "id": "zomerbemesting", "titel": "Zomerbemesting", "van": 6, "tot": 6, "prioriteit": "kan", "uitleg": "Tweede beurt; niet strooien bij hitte of droogte." },
-        { "id": "sproeien", "titel": "Sproeien bij droogte", "van": 6, "tot": 8, "prioriteit": "kan", "herhaal": "wekelijks", "groep": "water", "uitleg": "1–2× per week grondig in de vroege ochtend (10–15 mm)." },
-        { "id": "verticuteren-2", "titel": "Verticuteren en doorzaaien (beste moment)", "van": 8, "tot": 9, "prioriteit": "kan", "uitleg": "Eind augustus–september: warme bodem en vochtig weer geven de beste kieming. Alleen verticuteren bij veel mos." },
-        { "id": "najaarsbemesting", "titel": "Najaarsbemesting", "van": 9, "tot": 10, "prioriteit": "moet", "uitleg": "Kaliumrijke najaarsmest (bijv. NPK 8-4-15) voor wintervastheid; geen stikstofrijke mest meer." },
+        { "id": "zomerbemesting", "titel": "Zomerbemesting", "van": 6, "tot": 6, "prioriteit": "kan", "soort": "bemesten", "uitleg": "Tweede beurt; niet strooien bij hitte of droogte." },
+        { "id": "sproeien", "titel": "Sproeien bij droogte", "van": 6, "tot": 8, "prioriteit": "kan", "soort": "water", "herhaal": "wekelijks", "groep": "water", "uitleg": "1–2× per week grondig in de vroege ochtend (10–15 mm)." },
+        { "id": "verticuteren-2", "titel": "Verticuteren en doorzaaien (beste moment)", "van": 8, "tot": 9, "prioriteit": "kan", "soort": "zaaien", "uitleg": "Eind augustus–september: warme bodem en vochtig weer geven de beste kieming. Alleen verticuteren bij veel mos." },
+        { "id": "najaarsbemesting", "titel": "Najaarsbemesting", "van": 9, "tot": 10, "prioriteit": "moet", "soort": "bemesten", "uitleg": "Kaliumrijke najaarsmest (bijv. NPK 8-4-15) voor wintervastheid; geen stikstofrijke mest meer." },
         { "id": "beluchten", "titel": "Beluchten", "van": 9, "tot": 10, "prioriteit": "kan", "uitleg": "Bij een verdichte of veel belopen grasmat gaatjes prikken (holle-pennenbeluchter of spitvork); eventueel vullen met zand." },
-        { "id": "kalk", "titel": "Kalk strooien (alleen na pH-test)", "van": 10, "tot": 11, "prioriteit": "kan", "uitleg": "Alleen bij pH lager dan 6. Kan ook in februari–maart. 2–4 weken afstand houden van mest of zaad." },
+        { "id": "kalk", "titel": "Kalk strooien (alleen na pH-test)", "van": 10, "tot": 11, "prioriteit": "kan", "soort": "bemesten", "uitleg": "Alleen bij pH lager dan 6. Kan ook in februari–maart. 2–4 weken afstand houden van mest of zaad." },
         { "id": "blad", "titel": "Blad van het gazon halen", "van": 10, "tot": 12, "prioriteit": "moet", "herhaal": "wekelijks", "groep": "blad", "uitleg": "Wekelijks harken of mulchmaaien, zodat er geen natte, verstikkende bladlaag ontstaat." },
-        { "id": "laatste-maaibeurt", "titel": "Laatste maaibeurt", "van": 11, "tot": 11, "prioriteit": "moet", "uitleg": "Op ca. 4–5 cm, zodat het gras de winter niet te lang ingaat (minder schimmel en mos)." },
+        { "id": "laatste-maaibeurt", "titel": "Laatste maaibeurt", "van": 11, "tot": 11, "prioriteit": "moet", "soort": "maaien", "uitleg": "Op ca. 4–5 cm, zodat het gras de winter niet te lang ingaat (minder schimmel en mos)." },
         { "id": "niet-betreden", "titel": "Niet over bevroren gras lopen", "van": 12, "tot": 2, "prioriteit": "niet", "uitleg": "Niet over bevroren, berijpt of doorweekt gras lopen; dat geeft kale plekken." }
       ]
     },
@@ -765,7 +765,7 @@
         "https://www.rhs.org.uk/pruning/chelsea-chop"
       ],
       "taken": [
-        { "id": "border-opschonen", "titel": "Borders opschonen", "van": 2, "tot": 4, "prioriteit": "moet", "uitleg": "Oude stengels vlak boven de grond afknippen, van vroeg naar laat uitlopende soorten: kogeldistel en hemelsleutel (feb–mrt) → brandkruid (mrt) → leliegras, ooievaarsbek, maagdenpalm (mrt–apr) → lampenpoetsersgras (eind mrt–apr) → prachtkaars (apr). Fijngeknipt snoeisel mag als mulch blijven liggen." },
+        { "id": "border-opschonen", "titel": "Borders opschonen", "van": 2, "tot": 4, "prioriteit": "moet", "soort": "snoeien", "uitleg": "Oude stengels vlak boven de grond afknippen, van vroeg naar laat uitlopende soorten: kogeldistel en hemelsleutel (feb–mrt) → brandkruid (mrt) → leliegras, ooievaarsbek, maagdenpalm (mrt–apr) → lampenpoetsersgras (eind mrt–apr) → prachtkaars (apr). Fijngeknipt snoeisel mag als mulch blijven liggen." },
         { "id": "mulchen", "titel": "Borders mulchen", "van": 3, "tot": 4, "prioriteit": "kan", "uitleg": "Na het opschonen ca. 5 cm compost of bladaarde op de nog vochtige grond. Houd mulch weg van de stengelvoet. Rond prachtkaars, kogeldistel, brandkruid, hemelsleutel en lavendel spaarzaam of met grind." },
         { "id": "onkruid", "titel": "Onkruid wieden", "van": 3, "tot": 10, "prioriteit": "moet", "herhaal": "maandelijks", "uitleg": "Elke 2–4 weken in het groeiseizoen, vooral in het voorjaar vóór de zaadzetting. Wied ook ongewenste zaailingen van kogeldistel, prachtkaars en lampenpoetsersgras." },
         { "id": "broedseizoen", "titel": "Broedseizoen: geen hagen knippen", "van": 3, "tot": 7, "prioriteit": "niet", "uitleg": "Tussen 15 maart en 15 juli geen hagen knippen en geen grote snoei. Controleer ook daarbuiten eerst op nesten." },
@@ -773,7 +773,7 @@
         { "id": "blad-paden", "titel": "Blad van paden, stoep en terras", "van": 10, "tot": 12, "prioriteit": "moet", "herhaal": "wekelijks", "groep": "blad", "uitleg": "Blad op verharding direct weghalen: het is glad. Liever harken dan bladblazen." },
         { "id": "blad-laten", "titel": "Blad in borders laten liggen", "van": 10, "tot": 2, "prioriteit": "niet", "uitleg": "Gezond blad onder struiken, hagen en in borders mag tot het voorjaar blijven liggen: het houdt de bodem vochtig en biedt egels en insecten schuilplaats. Uitzondering: zieke bladeren van rozen en esdoorn afvoeren, en blad weghouden van de lavendel." },
         { "id": "egelhoek", "titel": "Egelhoek maken", "van": 10, "tot": 11, "prioriteit": "kan", "uitleg": "Een hoopje blad en takken in een rustige hoek is een goede overwinteringsplek voor egels en insecten." },
-        { "id": "buitenkraan", "titel": "Buitenkraan en tuinslang vorstvrij", "van": 11, "tot": 11, "prioriteit": "kan", "uitleg": "Vóór de eerste vorst de buitenkraan afsluiten en aftappen, en de tuinslang leeg opbergen." },
+        { "id": "buitenkraan", "titel": "Buitenkraan en tuinslang vorstvrij", "van": 11, "tot": 11, "prioriteit": "kan", "soort": "vorst", "uitleg": "Vóór de eerste vorst de buitenkraan afsluiten en aftappen, en de tuinslang leeg opbergen." },
         { "id": "gereedschap", "titel": "Snoeigereedschap onderhouden", "van": 1, "tot": 2, "prioriteit": "kan", "uitleg": "Vóór het snoeiseizoen scharen slijpen, schoonmaken en oliën. Scherp gereedschap geeft schone wonden." }
       ]
     }
