@@ -43,6 +43,13 @@ function laatsteGedaan(key) {
   return d && d.length ? d[d.length - 1] : null;
 }
 
+function laatstTekst(key) {
+  const r = opslag.laatsteKeer(key);
+  return r ? `Laatst gedaan: ${kortDatum(r.datum)}${r.door ? ` door ${r.door}` : ''}` : '';
+}
+
+const laatstRegel = (key) => (laatstTekst(key) ? `<p class="klein">${esc(laatstTekst(key))}</p>` : '');
+
 function thumb(plant, klasse = '') {
   return plant.thumb
     ? `<img class="${klasse}" src="${esc(plant.thumb)}" alt="">`
@@ -76,7 +83,6 @@ function vinkKnop(t, gedaan) {
 }
 
 function taakKaart(t, { gedaan = false } = {}) {
-  const laatste = laatsteGedaan(t.key);
   return `
     <article class="taak taak--${t.prioriteit}${gedaan ? ' taak--gedaan' : ''}">
       <a class="taak__foto" href="#/plant/${esc(t.plant.id)}">${thumb(t.plant)}</a>
@@ -87,7 +93,7 @@ function taakKaart(t, { gedaan = false } = {}) {
         <details class="uitleg" data-open-id="u-${esc(t.key)}">
           <summary>Hoe?</summary>
           <p>${esc(t.uitleg)}</p>
-          ${laatste ? `<p class="klein">Laatst gedaan: ${kortDatum(laatste)}</p>` : ''}
+          ${laatstRegel(t.key)}
         </details>
       </div>
       ${vinkKnop(t, gedaan)}
@@ -263,7 +269,7 @@ function jaarstrip(plant) {
 async function schermPlant(id) {
   const plant = state.tuin.alle.find((p) => p.id === id);
   if (!plant) return '<p class="leeg">Plant niet gevonden. <a href="#/planten">Terug naar planten</a></p>';
-  const notities = (await opslag.perPlant('notities', id)).sort((a, b) => b.datum.localeCompare(a.datum));
+  const notities = opslag.notities(id);
   const m = state.datum.getMonth() + 1;
   const taken = (plant.taken || []).map((t) => ({ ...t, key: `${plant.id}/${t.id}`, plant }));
   const nu = taken.filter((t) => t.prioriteit !== 'niet' && inPeriode(t, m));
@@ -286,8 +292,8 @@ async function schermPlant(id) {
       ${fotos.length ? fotos.map((f) => `
         <figure>
           <img src="${esc(f.url)}" alt="${esc(plant.naam)}">
-          ${f.id ? `<button class="foto-weg" data-actie="foto-weg" data-id="${f.id}" aria-label="Foto verwijderen">✕</button>` : ''}
-          ${f.datum ? `<figcaption>${kortDatum(f.datum)}</figcaption>` : ''}
+          ${f.id ? `<button class="foto-weg" data-actie="foto-weg" data-id="${esc(f.id)}" aria-label="Foto verwijderen">✕</button>` : ''}
+          ${f.datum ? `<figcaption>${kortDatum(f.datum)}${f.door ? ` · ${esc(f.door)}` : ''}</figcaption>` : ''}
         </figure>`).join('') : '<div class="galerij__leeg">🌿 Nog geen foto</div>'}
     </div>
     <label class="knop knop--licht foto-knop">📷 Foto toevoegen
@@ -319,18 +325,15 @@ async function schermPlant(id) {
       <section class="sectie">
         <h2>Alle taken</h2>
         <ul class="takenlijst">
-          ${[...taken].sort((a, b) => a.van - b.van).map((t) => {
-            const laatste = laatsteGedaan(t.key);
-            return `
+          ${[...taken].sort((a, b) => a.van - b.van).map((t) => `
             <li class="takenlijst__item takenlijst__item--${t.prioriteit}">
               <details data-open-id="t-${esc(t.key)}">
                 <summary><span class="takenlijst__periode">${esc(periodeTekst(t))}</span> ${esc(t.titel)}</summary>
                 ${chips(t, false)}
                 <p>${esc(t.uitleg)}</p>
-                ${laatste ? `<p class="klein">Laatst gedaan: ${kortDatum(laatste)}</p>` : ''}
+                ${laatstRegel(t.key)}
               </details>
-            </li>`;
-          }).join('')}
+            </li>`).join('')}
         </ul>
       </section>` : ''}
 
@@ -348,8 +351,8 @@ async function schermPlant(id) {
       </form>
       <ul class="notities">
         ${notities.map((n) => `
-          <li><div><span class="klein">${kortDatum(n.datum)}</span><p>${esc(n.tekst)}</p></div>
-          <button class="tekstknop" data-actie="notitie-weg" data-id="${n.id}" aria-label="Notitie verwijderen">✕</button></li>`).join('')}
+          <li><div><span class="klein">${kortDatum(n.datum)}${n.door ? ` · ${esc(n.door)}` : ''}</span><p>${esc(n.tekst)}</p></div>
+          <button class="tekstknop" data-actie="notitie-weg" data-id="${esc(n.id)}" aria-label="Notitie verwijderen">✕</button></li>`).join('')}
       </ul>
     </section>
 
@@ -466,14 +469,25 @@ async function schermMeer() {
   return `
     <header class="kop"><h1>Meer</h1></header>
 
+    ${opslag.status.modus === 'online' ? `
+      <section class="sectie kaartje">
+        <h2>Gedeelde tuin</h2>
+        <p>Ingelogd als <strong>${esc(opslag.status.gebruiker?.email || '')}</strong>. Afgevinkte taken, notities, eigen planten en foto's worden online bewaard en zijn direct zichtbaar voor iedereen die toegang heeft. Zonder internet werkt de app gewoon door; wijzigingen worden gesynchroniseerd zodra er weer verbinding is.</p>
+        <div class="acties"><button class="knop knop--licht" data-actie="uitloggen">Uitloggen</button></div>
+      </section>` : `
+      <section class="sectie kaartje">
+        <h2>Opslag</h2>
+        <p>Afgevinkte taken, notities, eigen planten en foto's staan alleen op dit apparaat.</p>
+      </section>`}
+
     <section class="sectie kaartje">
-      <h2>Gegevens overzetten</h2>
-      <p>Afgevinkte taken, notities, eigen planten en foto's staan alleen op dit apparaat. Met een export maak je een back-up of zet je alles over naar een ander apparaat.</p>
+      <h2>Back-up</h2>
+      <p>Met een export bewaar je alle gegevens als bestand. Met importeren zet je een back-up terug.</p>
       <div class="acties">
         <button class="knop" data-actie="export">Exporteren</button>
         <label class="knop knop--licht">Importeren<input type="file" accept="application/json,.json" data-invoer="import" hidden></label>
       </div>
-      <p class="klein">Importeren vervangt de gegevens op dit apparaat. ${esc(schatting)}</p>
+      <p class="klein">Importeren vervangt alle huidige gegevens${opslag.status.modus === 'online' ? ', ook voor de anderen' : ''}. ${esc(schatting)}</p>
     </section>
 
     ${verborgen.length ? `
@@ -494,7 +508,7 @@ async function schermMeer() {
 
     <section class="sectie kaartje">
       <h2>Op je telefoon installeren</h2>
-      <p>Open deze pagina in Chrome op je telefoon, tik op het menu (⋮) en kies <strong>Toevoegen aan startscherm</strong> of <strong>App installeren</strong>. Daarna werkt de app ook zonder internet.</p>
+      <p>Open deze pagina in Chrome op je telefoon, tik op het menu (⋮) en kies <strong>Toevoegen aan startscherm</strong> of <strong>App installeren</strong>. Op een iPhone: open de pagina in Safari, tik op Delen en kies <strong>Zet op beginscherm</strong>. Daarna werkt de app ook zonder internet.</p>
     </section>
 
     <section class="sectie kaartje">
@@ -504,9 +518,36 @@ async function schermMeer() {
     </section>`;
 }
 
+function schermInloggen() {
+  return `
+    <div class="inlog">
+      <img src="icons/icon-192.png" alt="" width="96" height="96">
+      <h1>Tuinplanner</h1>
+      <p>Log in om de gedeelde tuin te openen. Alleen uitgenodigde accounts hebben toegang.</p>
+      <button class="knop knop--groot" data-actie="inloggen">Inloggen met Google</button>
+      ${state.inlogFout ? `<p class="fout">${esc(state.inlogFout)}</p>` : ''}
+    </div>`;
+}
+
+function schermGeenToegang() {
+  return `
+    <div class="inlog">
+      <h1>Geen toegang</h1>
+      <p>Het account <strong>${esc(opslag.status.gebruiker?.email || '')}</strong> heeft (nog) geen toegang tot deze tuin. Vraag de beheerder om dit e-mailadres toe te voegen, of log in met een ander account.</p>
+      <button class="knop knop--groot" data-actie="uitloggen">Uitloggen</button>
+    </div>`;
+}
+
 // ---------------------------------------------------------------- router
 
 async function render({ scrollNaarBoven = false } = {}) {
+  const { status } = opslag;
+  const buiten = status.modus === 'online' && (!status.gebruiker || status.fout === 'geenToegang');
+  document.body.classList.toggle('zonder-nav', buiten);
+  if (buiten) {
+    app.innerHTML = status.gebruiker ? schermGeenToegang() : schermInloggen();
+    return;
+  }
   const open = new Set([...app.querySelectorAll('details[open][data-open-id]')].map((d) => d.dataset.openId));
   const [, naam = 'nu', arg] = (location.hash || '#/nu').split('/');
   let html;
@@ -529,23 +570,47 @@ async function render({ scrollNaarBoven = false } = {}) {
 }
 
 async function vernieuw() {
+  uitgesteld = false;
   state.tuin = await laadTuin();
-  state.gedaan = await opslag.gedaanMap();
+  state.gedaan = opslag.gedaanMap();
   await render();
 }
+
+// Wijzigingen van anderen (of van de opslag) komen hier binnen. Niet verversen terwijl
+// iemand aan het typen is of een formulier invult; dan wachten we tot dat klaar is.
+let uitgesteld = false;
+let wijzigTimer;
+
+function bezigMetInvullen() {
+  const naam = (location.hash || '').split('/')[1];
+  if (naam === 'nieuw' || naam === 'bewerk') return true;
+  const actief = document.activeElement;
+  if (actief && app.contains(actief) && actief.matches('input, textarea, select')) return true;
+  return [...app.querySelectorAll('textarea')].some((t) => t.value.trim());
+}
+
+function bijWijziging() {
+  clearTimeout(wijzigTimer);
+  wijzigTimer = setTimeout(() => {
+    if (bezigMetInvullen()) uitgesteld = true;
+    else vernieuw();
+  }, 80);
+}
+
+app.addEventListener('focusout', () => {
+  setTimeout(() => { if (uitgesteld && !bezigMetInvullen()) vernieuw(); }, 200);
+});
 
 // ---------------------------------------------------------------- acties
 
 async function vinkAf(keys) {
   for (const k of keys) await opslag.vinkAf(k, state.datum);
-  state.gedaan = await opslag.gedaanMap();
-  await render();
+  await vernieuw();
   toast(keys.length > 1 ? `${keys.length} taken gedaan` : 'Gedaan ✓', {
     label: 'Ongedaan maken',
     doe: async () => {
       for (const k of keys) await opslag.maakOngedaan(k);
-      state.gedaan = await opslag.gedaanMap();
-      await render();
+      await vernieuw();
     },
   });
 }
@@ -559,34 +624,43 @@ app.addEventListener('click', async (e) => {
     case 'vink-groep': return vinkAf(el.dataset.keys.split(' '));
     case 'ongedaan':
       await opslag.maakOngedaan(el.dataset.key);
-      state.gedaan = await opslag.gedaanMap();
-      return render();
+      return vernieuw();
     case 'filter': state.filter = el.dataset.cat; return render();
     case 'maand': state.kalenderMaand = Number(el.dataset.maand); return render();
     case 'notitie-weg':
       if (!confirm('Notitie verwijderen?')) return;
-      await opslag.verwijder('notities', Number(el.dataset.id));
-      return render();
+      await opslag.verwijderNotitie(el.dataset.id);
+      return vernieuw();
     case 'foto-weg':
       if (!confirm('Deze foto verwijderen?')) return;
-      await opslag.verwijder('fotos', Number(el.dataset.id));
+      await opslag.verwijderFoto(el.dataset.id);
       return vernieuw();
     case 'verberg': case 'toon': {
-      const lijst = new Set(await opslag.instelling('verborgen', []));
+      const lijst = new Set(opslag.instelling('verborgen', []));
       if (actie === 'verberg') lijst.add(el.dataset.id); else lijst.delete(el.dataset.id);
       await opslag.zetInstelling('verborgen', [...lijst]);
       await vernieuw();
-      return toast(actie === 'verberg' ? 'Plant verborgen; terugzetten kan via Meer.' : 'Plant staat weer in je tuin.');
+      return toast(actie === 'verberg' ? 'Plant verborgen; terugzetten kan via Meer.' : 'Plant staat weer in de tuin.');
     }
     case 'plant-weg': {
       if (!confirm('Deze plant met alle foto\'s en notities verwijderen?')) return;
-      const id = el.dataset.id;
-      await opslag.verwijder('planten', id);
-      for (const f of await opslag.perPlant('fotos', id)) await opslag.verwijder('fotos', f.id);
-      for (const n of await opslag.perPlant('notities', id)) await opslag.verwijder('notities', n.id);
+      await opslag.verwijderPlant(el.dataset.id);
       location.hash = '#/planten';
       return vernieuw();
     }
+    case 'inloggen':
+      state.inlogFout = '';
+      try {
+        await opslag.inloggen();
+      } catch (fout) {
+        state.inlogFout = `Inloggen mislukt (${fout.code || fout.message}).`;
+        return render();
+      }
+      return;
+    case 'uitloggen':
+      await opslag.uitloggen();
+      location.hash = '#/nu';
+      return;
     case 'taak-erbij':
       app.querySelector('.taakrijen').insertAdjacentHTML('beforeend', taakRij());
       return;
@@ -594,7 +668,7 @@ app.addEventListener('click', async (e) => {
       el.closest('.taakrij').remove();
       return;
     case 'export': {
-      const data = await opslag.exporteer();
+      const data = opslag.exporteer();
       const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -631,7 +705,7 @@ app.addEventListener('change', async (e) => {
   if (el.dataset.invoer === 'foto' && el.files[0]) {
     toast('Foto verwerken…');
     const blob = await verkleinFoto(el.files[0]);
-    await opslag.bewaar('fotos', { plantId: el.dataset.plant, blob, datum: new Date().toISOString() });
+    await opslag.bewaarFoto(el.dataset.plant, blob);
     await vernieuw();
     toast('Foto toegevoegd');
   }
@@ -654,8 +728,9 @@ app.addEventListener('submit', async (e) => {
   if (form.dataset.form === 'notitie') {
     const tekst = form.tekst.value.trim();
     if (!tekst) return;
-    await opslag.bewaar('notities', { plantId: form.dataset.plant, tekst, datum: new Date().toISOString() });
-    await render();
+    form.tekst.value = '';
+    await opslag.bewaarNotitie(form.dataset.plant, tekst);
+    await vernieuw();
     toast('Notitie opgeslagen');
   }
   if (form.dataset.form === 'datum') {
@@ -689,30 +764,31 @@ app.addEventListener('submit', async (e) => {
       zekerheid: 'zeker',
       taken,
     };
-    await opslag.bewaar('planten', plant);
+    await opslag.bewaarPlant(plant);
     const foto = form.foto?.files?.[0];
-    if (foto) {
-      const blob = await verkleinFoto(foto);
-      await opslag.bewaar('fotos', { plantId: id, blob, datum: new Date().toISOString() });
-    }
+    if (foto) await opslag.bewaarFoto(id, await verkleinFoto(foto));
     location.hash = `#/plant/${id}`;
     await vernieuw();
     toast(bestaand ? 'Plant bijgewerkt' : 'Plant toegevoegd');
   }
 });
 
-window.addEventListener('hashchange', () => render({ scrollNaarBoven: true }));
+window.addEventListener('hashchange', async () => {
+  if (uitgesteld) await vernieuw();
+  await render({ scrollNaarBoven: true });
+});
 
 // ---------------------------------------------------------------- start
 
 (async function start() {
   try {
+    await opslag.start(bijWijziging);
     await vernieuw();
   } catch (fout) {
     app.innerHTML = `<p class="leeg">Er ging iets mis bij het laden: ${esc(fout.message)}</p>`;
     console.error(fout);
   }
-  opslag.vraagBlijvendeOpslag();
+  try { navigator.storage?.persist?.(); } catch { /* niet ondersteund */ }
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     navigator.serviceWorker.register('sw.js').catch((f) => console.warn('Service worker niet geregistreerd', f));
   }

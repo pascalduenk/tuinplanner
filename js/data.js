@@ -1,15 +1,24 @@
-// Laadt de standaardplanten (data/planten.json) en combineert ze met eigen planten en foto's.
-import { alles, instelling } from './opslag.js';
+// Combineert de standaardplanten (data/planten.json) met eigen planten en foto's uit de opslag.
+import * as opslag from './opslag.js';
 
 const OVERNEMEN = ['categorie', 'standplaats', 'bodem', 'hoogte', 'bloei', 'bloeiMaanden', 'winterhard',
   'waterVoeding', 'ziekten', 'insecten', 'opmerkingen', 'bronnen', 'taken'];
 
-let objectUrls = [];
+let basisPromise;
+
+function laadBasis() {
+  if (!basisPromise) {
+    basisPromise = fetch('data/planten.json').then((antwoord) => {
+      if (!antwoord.ok) throw new Error('Kon de plantgegevens niet laden.');
+      return antwoord.json();
+    });
+    basisPromise.catch(() => { basisPromise = null; });
+  }
+  return basisPromise;
+}
 
 export async function laadTuin() {
-  const antwoord = await fetch('data/planten.json');
-  if (!antwoord.ok) throw new Error('Kon de plantgegevens niet laden.');
-  const basis = await antwoord.json();
+  const basis = await laadBasis();
 
   const perId = new Map(basis.planten.map((p) => [p.id, p]));
   const standaard = basis.planten.map((p) => {
@@ -24,23 +33,18 @@ export async function laadTuin() {
     return plant;
   });
 
-  // Eigen foto's (alle planten) als object-URL's.
-  objectUrls.forEach((u) => URL.revokeObjectURL(u));
-  objectUrls = [];
   const fotosPerPlant = new Map();
-  for (const f of await alles('fotos')) {
-    const url = URL.createObjectURL(f.blob);
-    objectUrls.push(url);
+  for (const f of [...opslag.fotos()].sort((a, b) => a.datum.localeCompare(b.datum))) {
     if (!fotosPerPlant.has(f.plantId)) fotosPerPlant.set(f.plantId, []);
-    fotosPerPlant.get(f.plantId).push({ id: f.id, url, datum: f.datum });
+    fotosPerPlant.get(f.plantId).push({ id: f.id, url: f.data, datum: f.datum, door: f.door });
   }
 
-  const eigen = (await alles('planten')).map((p) => {
+  const eigen = opslag.eigenPlanten().map((p) => {
     const fotos = fotosPerPlant.get(p.id) || [];
     return { ...p, eigen: true, foto: fotos[0]?.url || null, thumb: fotos[0]?.url || null };
   });
 
-  const verborgen = new Set(await instelling('verborgen', []));
+  const verborgen = new Set(opslag.instelling('verborgen', []));
   const planten = [...standaard, ...eigen].map((p) => ({ ...p, eigenFotos: fotosPerPlant.get(p.id) || [] }));
 
   return {

@@ -1,22 +1,32 @@
-// Verkleint een foto van de camera/galerij in de browser, zodat de opslag klein blijft.
+// Verkleint een foto van de camera/galerij in de browser. De foto wordt in de (gedeelde)
+// database bewaard, dus houden we hem klein: max. 1000 px en liefst onder ~250 KB.
 
-export async function verkleinFoto(bestand, maxZijde = 1400, kwaliteit = 0.82) {
+const MAX_BYTES = 250 * 1024;
+
+export async function verkleinFoto(bestand) {
   let beeld;
   try {
     beeld = await createImageBitmap(bestand, { imageOrientation: 'from-image' });
   } catch {
     beeld = await laadAlsImg(bestand);
   }
-  const schaal = Math.min(1, maxZijde / Math.max(beeld.width, beeld.height));
-  const w = Math.round(beeld.width * schaal);
-  const h = Math.round(beeld.height * schaal);
-  const canvas = document.createElement('canvas');
-  canvas.width = w;
-  canvas.height = h;
-  canvas.getContext('2d').drawImage(beeld, 0, 0, w, h);
+  let blob;
+  for (const [maxZijde, kwaliteit] of [[1000, 0.78], [900, 0.7], [800, 0.62], [700, 0.55]]) {
+    blob = await teken(beeld, maxZijde, kwaliteit);
+    if (blob.size <= MAX_BYTES) break;
+  }
   if (beeld.close) beeld.close();
+  return blob;
+}
+
+function teken(beeld, maxZijde, kwaliteit) {
+  const schaal = Math.min(1, maxZijde / Math.max(beeld.width, beeld.height));
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(beeld.width * schaal);
+  canvas.height = Math.round(beeld.height * schaal);
+  canvas.getContext('2d').drawImage(beeld, 0, 0, canvas.width, canvas.height);
   return new Promise((resolve, reject) => {
-    canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error('Foto verwerken mislukt'))), 'image/jpeg', kwaliteit);
+    canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('Foto verwerken mislukt'))), 'image/jpeg', kwaliteit);
   });
 }
 

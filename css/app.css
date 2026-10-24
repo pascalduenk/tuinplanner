@@ -290,6 +290,13 @@ input, select, textarea {
 
 .kaartje { background: var(--vlak); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--schaduw); }
 
+/* ---------- inloggen */
+.inlog { max-width: 420px; margin: 12vh auto 0; text-align: center; display: grid; gap: 12px; justify-items: center; }
+.inlog img { border-radius: 22px; }
+.inlog p { color: var(--zacht); }
+.fout { color: var(--niet); font-size: 0.9rem; }
+body.zonder-nav .nav { display: none; }
+
 /* ---------- navigatie en toast */
 .nav {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;

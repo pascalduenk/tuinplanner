@@ -1,6 +1,7 @@
 // Service worker: zorgt dat de app offline werkt.
 // Verhoog VERSIE na elke wijziging aan de app, dan halen telefoons de nieuwe versie op.
-const VERSIE = 'tuinplanner-v1';
+const VERSIE = 'tuinplanner-v2';
+const FIREBASE = 'https://www.gstatic.com/firebasejs/12.19.0/';
 
 const SCHIL = [
   './',
@@ -9,6 +10,8 @@ const SCHIL = [
   'js/app.js',
   'js/seizoen.js',
   'js/opslag.js',
+  'js/opslag-firebase.js',
+  'js/firebase-config.js',
   'js/data.js',
   'js/fotos.js',
   'data/planten.json',
@@ -22,6 +25,10 @@ self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(VERSIE);
     await cache.addAll(SCHIL);
+    // Firebase-bibliotheek (vaste versie) alvast ophalen voor offline gebruik.
+    try {
+      await cache.addAll(['firebase-app.js', 'firebase-auth.js', 'firebase-firestore.js'].map((f) => FIREBASE + f));
+    } catch { /* lukt later bij gebruik */ }
     // Thumbnails alvast ophalen, zodat het Nu-scherm offline compleet is.
     try {
       const data = await (await fetch('data/planten.json')).json();
@@ -43,7 +50,11 @@ self.addEventListener('activate', (event) => {
 // met de cache als terugval als er geen of traag internet is.
 self.addEventListener('fetch', (event) => {
   const req = event.request;
-  if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
+  if (req.method !== 'GET') return;
+  // De Firebase-bibliotheek verandert nooit (vaste versie): uit de cache.
+  if (req.url.startsWith(FIREBASE)) { event.respondWith(cacheEerst(req)); return; }
+  // Overige externe verzoeken (Firestore, inloggen) niet aanraken.
+  if (new URL(req.url).origin !== location.origin) return;
   const url = new URL(req.url);
   if (url.pathname.includes('/img/')) event.respondWith(cacheEerst(req));
   else event.respondWith(netwerkEerst(req));

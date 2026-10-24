@@ -31,11 +31,20 @@ Ga daarna in de browser naar <http://localhost:8080>. Dubbelklikken op `index.ht
 
 Let op: de repo is publiek, dus iedereen die de link kent, kan de plantfoto's zien. De originele foto's in `fotos/` worden niet geüpload.
 
+## Gedeelde online opslag (Firebase)
+
+Afgevinkte taken, notities, eigen planten en foto's worden bewaard in **Firestore**, zodat iedereen die toegang heeft hetzelfde ziet. Inloggen gaat met een Google-account. Zonder internet werkt de app gewoon door; wijzigingen worden later gesynchroniseerd.
+
+- Configuratie: `js/firebase-config.js`. Staat daar `null`, dan bewaart de app alles alleen op het apparaat zelf.
+- Wie toegang heeft: `firestore.rules`. Na een wijziging plak je de regels in de Firebase-console (Firestore Database → Regels → Publiceren).
+- Inloggen werkt alleen vanaf domeinen die in de Firebase-console zijn toegestaan: Authentication → Instellingen → Geautoriseerde domeinen. Hier staan `localhost` en `pascalduenk.github.io`.
+- Foto's worden verkleind (max. 1000 px, ca. 250 KB) en in Firestore opgeslagen. Daarvoor is het gratis Spark-abonnement genoeg.
+
 ## Op de telefoon installeren
 
 Open de GitHub Pages-link in Chrome op je telefoon. Tik op het menu (⋮) en kies **App installeren** of **Toevoegen aan startscherm**. Daarna start de app vanaf je startscherm en werkt hij ook zonder internet.
 
-Afgevinkte taken, notities, eigen planten en eigen foto's worden **op het apparaat zelf** bewaard. Met *Meer → Exporteren/Importeren* maak je een back-up of zet je alles over naar een ander apparaat.
+Met *Meer → Exporteren/Importeren* maak je een back-up van alle gegevens, of zet je er een terug.
 
 ## Iets aanpassen
 
