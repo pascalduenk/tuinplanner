@@ -1,0 +1,8 @@
+# Originele foto's (129 MB) blijven lokaal; de app gebruikt de verkleinde versies in img/
+fotos/
+
+.claude/settings.local.json
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

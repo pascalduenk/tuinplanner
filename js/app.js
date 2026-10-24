@@ -1,0 +1,719 @@
+import {
+  MAANDEN, MAANDEN_LETTER, vandaag, isTestdatum, inPeriode, periodeTekst, seizoen,
+  isBroedseizoen, indelen, isGedaan,
+} from './seizoen.js';
+import * as opslag from './opslag.js';
+import { laadTuin, alleTaken } from './data.js';
+import { verkleinFoto } from './fotos.js';
+
+const app = document.getElementById('app');
+const toastEl = document.getElementById('toast');
+
+const state = {
+  tuin: null,
+  gedaan: new Map(),
+  datum: vandaag(),
+  kalenderMaand: null,
+  zoek: '',
+  filter: 'Alle',
+  route: '',
+};
+
+const GROEP_ICOON = { water: '💧', controle: '🔍', wildescheuten: '✂️', paal: '🪵', blad: '🍂' };
+const CATEGORIEEN = ['Heester', 'Boom', 'Haag', 'Roos', 'Vaste plant', 'Siergras', 'Bodembedekker',
+  'Klimplant', 'Eenjarige', 'Bol/knol', 'Groente/kruid', 'Gazon', 'Overig'];
+const HERHAAL_TEKST = { wekelijks: 'wekelijks', maandelijks: 'maandelijks' };
+
+// ---------------------------------------------------------------- hulpjes
+
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => (
+  { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+const datumTekst = (d, opties = { weekday: 'long', day: 'numeric', month: 'long' }) =>
+  d.toLocaleDateString('nl-NL', opties);
+
+const kortDatum = (iso) => datumTekst(new Date(iso), { day: 'numeric', month: 'short', year: 'numeric' });
+
+function hostnaam(url) {
+  try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return url; }
+}
+
+function laatsteGedaan(key) {
+  const d = state.gedaan.get(key);
+  return d && d.length ? d[d.length - 1] : null;
+}
+
+function thumb(plant, klasse = '') {
+  return plant.thumb
+    ? `<img class="${klasse}" src="${esc(plant.thumb)}" alt="">`
+    : `<span class="${klasse} geen-foto" aria-hidden="true">🌿</span>`;
+}
+
+function toast(tekst, actie) {
+  toastEl.innerHTML = `<span>${esc(tekst)}</span>${actie ? `<button data-toast>${esc(actie.label)}</button>` : ''}`;
+  toastEl.hidden = false;
+  clearTimeout(toast.timer);
+  const knop = toastEl.querySelector('[data-toast]');
+  if (knop) knop.onclick = () => { toastEl.hidden = true; actie.doe(); };
+  toast.timer = setTimeout(() => { toastEl.hidden = true; }, 5000);
+}
+
+// ---------------------------------------------------------------- taakkaarten
+
+function chips(t, metPeriode = true) {
+  const delen = [];
+  if (metPeriode) delen.push(`<span class="chip">${esc(periodeTekst(t))}</span>`);
+  if (t.prioriteit === 'moet') delen.push('<span class="chip chip--moet">moet</span>');
+  if (t.prioriteit === 'kan') delen.push('<span class="chip chip--kan">kan</span>');
+  if (HERHAAL_TEKST[t.herhaal]) delen.push(`<span class="chip">${HERHAAL_TEKST[t.herhaal]}</span>`);
+  return `<div class="chips">${delen.join('')}</div>`;
+}
+
+function vinkKnop(t, gedaan) {
+  return gedaan
+    ? `<button class="vink vink--aan" data-actie="ongedaan" data-key="${esc(t.key)}" aria-label="Markeer als niet gedaan" title="Ongedaan maken">✓</button>`
+    : `<button class="vink" data-actie="vink" data-key="${esc(t.key)}" aria-label="Markeer als gedaan" title="Gedaan">✓</button>`;
+}
+
+function taakKaart(t, { gedaan = false } = {}) {
+  const laatste = laatsteGedaan(t.key);
+  return `
+    <article class="taak taak--${t.prioriteit}${gedaan ? ' taak--gedaan' : ''}">
+      <a class="taak__foto" href="#/plant/${esc(t.plant.id)}">${thumb(t.plant)}</a>
+      <div class="taak__body">
+        <a class="taak__plant" href="#/plant/${esc(t.plant.id)}">${esc(t.plant.naam)}</a>
+        <h3 class="taak__titel">${esc(t.titel)}</h3>
+        ${chips(t)}
+        <details class="uitleg" data-open-id="u-${esc(t.key)}">
+          <summary>Hoe?</summary>
+          <p>${esc(t.uitleg)}</p>
+          ${laatste ? `<p class="klein">Laatst gedaan: ${kortDatum(laatste)}</p>` : ''}
+        </details>
+      </div>
+      ${vinkKnop(t, gedaan)}
+    </article>`;
+}
+
+function groepKaart(groep, taken) {
+  const titel = state.tuin.groepen[groep] || groep;
+  const prio = taken.some((t) => t.prioriteit === 'moet') ? 'moet' : 'kan';
+  const namen = taken.map((t) => t.plant.naam).join(', ');
+  return `
+    <article class="taak taak--${prio} groep">
+      <div class="taak__foto groep__icoon" aria-hidden="true">${GROEP_ICOON[groep] || '🌿'}</div>
+      <div class="taak__body">
+        <h3 class="taak__titel">${esc(titel)}</h3>
+        <p class="taak__plant">${taken.length} planten: ${esc(namen)}</p>
+        <details class="uitleg" data-open-id="g-${esc(groep)}">
+          <summary>Per plant</summary>
+          <ul class="groep__lijst">
+            ${taken.map((t) => `
+              <li>
+                <a href="#/plant/${esc(t.plant.id)}">${thumb(t.plant, 'mini')}</a>
+                <div><strong>${esc(t.plant.naam)}</strong> · <span class="klein">${esc(periodeTekst(t))}</span><p>${esc(t.uitleg)}</p></div>
+                ${vinkKnop(t, false)}
+              </li>`).join('')}
+          </ul>
+        </details>
+      </div>
+      <button class="vink" data-actie="vink-groep" data-keys="${esc(taken.map((t) => t.key).join(' '))}" aria-label="Alles in deze groep gedaan" title="Alles gedaan">✓</button>
+    </article>`;
+}
+
+/** Kaarten voor een lijst taken; taken met dezelfde groep worden samengevoegd. */
+function kaarten(taken) {
+  const perGroep = new Map();
+  for (const t of taken) if (t.groep) {
+    if (!perGroep.has(t.groep)) perGroep.set(t.groep, []);
+    perGroep.get(t.groep).push(t);
+  }
+  const html = [];
+  const gehad = new Set();
+  for (const t of taken) {
+    const groep = t.groep && perGroep.get(t.groep).length > 1 ? t.groep : null;
+    if (groep) {
+      if (!gehad.has(groep)) { gehad.add(groep); html.push(groepKaart(groep, perGroep.get(groep))); }
+    } else {
+      html.push(taakKaart(t));
+    }
+  }
+  return html.join('');
+}
+
+function sectie(titel, taken, uitleg = '') {
+  if (!taken.length) return '';
+  return `
+    <section class="sectie">
+      <h2>${esc(titel)} <span class="teller">${taken.length}</span></h2>
+      ${uitleg ? `<p class="sectie__uitleg">${esc(uitleg)}</p>` : ''}
+      <div class="kaarten">${kaarten(taken)}</div>
+    </section>`;
+}
+
+function letOpLijst(taken, { open = false } = {}) {
+  if (!taken.length) return '';
+  // Zelfde advies bij meerdere planten (bijv. 'Pluimen laten staan') samenvoegen.
+  const perTitel = new Map();
+  for (const t of taken) {
+    if (!perTitel.has(t.titel)) perTitel.set(t.titel, []);
+    perTitel.get(t.titel).push(t);
+  }
+  const regels = [...perTitel.entries()];
+  return `
+    <section class="sectie">
+      <details class="letop-blok" data-open-id="letop"${open ? ' open' : ''}>
+        <summary><h2>Let op: liever niet <span class="teller">${regels.length}</span></h2>
+          <p class="sectie__uitleg">${esc(regels.map(([titel]) => titel.toLowerCase()).slice(0, 4).join(' · '))}${regels.length > 4 ? ' …' : ''}</p>
+        </summary>
+        <ul class="letop">
+          ${regels.map(([titel, lijst]) => `
+            <li>
+              <details data-open-id="l-${esc(titel)}">
+                <summary><strong>${esc(titel)}</strong> <span class="klein">· ${esc(lijst.map((t) => t.plant.naam).join(', '))}</span></summary>
+                ${lijst.map((t) => `<p>${lijst.length > 1 ? `<strong>${esc(t.plant.naam)}:</strong> ` : ''}${esc(t.uitleg)} <a href="#/plant/${esc(t.plant.id)}">Naar plant →</a></p>`).join('')}
+              </details>
+            </li>`).join('')}
+        </ul>
+      </details>
+    </section>`;
+}
+
+// ---------------------------------------------------------------- schermen
+
+function schermNu() {
+  const d = state.datum;
+  const taken = alleTaken(state.tuin.planten);
+  const ind = indelen(taken, state.gedaan, d);
+  const moetEerst = (a, b) => (a.prioriteit === 'moet' ? 0 : 1) - (b.prioriteit === 'moet' ? 0 : 1);
+  ind.laatsteKans.sort(moetEerst);
+  ind.binnenkort.sort(moetEerst);
+  const volgende = MAANDEN[d.getMonth() + 1 > 11 ? 0 : d.getMonth() + 1];
+  const open = ind.laatsteKans.length + ind.moet.length + ind.kan.length;
+
+  return `
+    <header class="kop">
+      <p class="kop__datum">${esc(datumTekst(d))}${isTestdatum() ? ' <span class="chip chip--test">testdatum</span>' : ''}</p>
+      <h1>Nu in de tuin</h1>
+      <p class="kop__sub">${seizoen(d)} · ${open ? `${open} ${open === 1 ? 'taak' : 'taken'} open` : 'alles gedaan'}</p>
+    </header>
+    ${isBroedseizoen(d) ? `
+      <div class="banner">🐦 <div><strong>Broedseizoen (15 maart – 15 juli).</strong> Geen hagen knippen en geen grote snoei. Kijk altijd eerst of er nesten zitten.</div></div>` : ''}
+    ${sectie('Laatste kans deze maand', ind.laatsteKans, `Deze taken lopen eind ${MAANDEN[d.getMonth()]} af.`)}
+    ${sectie('Moet nu', ind.moet)}
+    ${sectie('Kan nu', ind.kan)}
+    ${!open ? '<p class="leeg">Niets openstaands voor nu. Geniet van de tuin! 🌱</p>' : ''}
+    ${letOpLijst(ind.letOp)}
+    ${sectie(`Binnenkort (${volgende})`, ind.binnenkort)}
+    ${ind.gedaan.length ? `
+      <section class="sectie">
+        <details class="gedaan" data-open-id="gedaan">
+          <summary><h2>Gedaan <span class="teller">${ind.gedaan.length}</span></h2></summary>
+          <div class="kaarten">${ind.gedaan.map((t) => taakKaart(t, { gedaan: true })).join('')}</div>
+        </details>
+      </section>` : ''}`;
+}
+
+function schermPlanten() {
+  const cats = ['Alle', ...new Set(state.tuin.planten.map((p) => p.categorie).filter(Boolean))];
+  const zoek = state.zoek.trim().toLowerCase();
+  const lijst = state.tuin.planten.filter((p) =>
+    (state.filter === 'Alle' || p.categorie === state.filter) &&
+    (!zoek || `${p.naam} ${p.latijn}`.toLowerCase().includes(zoek)));
+  return `
+    <header class="kop kop--rij">
+      <h1>Planten</h1>
+      <a class="knop" href="#/nieuw">+ Plant toevoegen</a>
+    </header>
+    <input class="zoek" type="search" placeholder="Zoek op naam…" value="${esc(state.zoek)}" data-invoer="zoek" aria-label="Zoek plant">
+    <div class="filters" role="tablist">
+      ${cats.map((c) => `<button class="filter${c === state.filter ? ' filter--aan' : ''}" data-actie="filter" data-cat="${esc(c)}">${esc(c)}</button>`).join('')}
+    </div>
+    <div class="raster">
+      ${lijst.map((p) => `
+        <a class="plantkaart" href="#/plant/${esc(p.id)}">
+          ${thumb(p, 'plantkaart__foto')}
+          <span class="plantkaart__naam">${esc(p.naam)}</span>
+          <span class="plantkaart__latijn">${esc(p.latijn)}</span>
+          ${p.zekerheid === 'te controleren' ? '<span class="badge">te controleren</span>' : ''}
+          ${p.eigen ? '<span class="badge badge--eigen">eigen</span>' : ''}
+        </a>`).join('') || '<p class="leeg">Geen planten gevonden.</p>'}
+    </div>`;
+}
+
+function jaarstrip(plant) {
+  const huidig = state.datum.getMonth() + 1;
+  const cellen = (aan, klasse) => MAANDEN_LETTER.map((_, i) =>
+    `<span class="cel${aan(i + 1) ? ` aan ${klasse}` : ''}${i + 1 === huidig ? ' nu' : ''}"></span>`).join('');
+  const rijen = [];
+  if (plant.bloeiMaanden && plant.bloeiMaanden.length) {
+    rijen.push(`<div class="jaar__rij"><div class="jaar__label">🌸 Bloei</div><div class="jaar__cellen">${cellen((m) => plant.bloeiMaanden.includes(m), 'bloei')}</div></div>`);
+  }
+  const taken = [...(plant.taken || [])].sort((a, b) => a.van - b.van);
+  for (const t of taken) {
+    rijen.push(`<div class="jaar__rij"><div class="jaar__label">${esc(t.titel)}</div><div class="jaar__cellen">${cellen((m) => inPeriode(t, m), t.prioriteit)}</div></div>`);
+  }
+  return `
+    <div class="jaar">
+      <div class="jaar__rij jaar__rij--kop"><div class="jaar__label"></div><div class="jaar__cellen">${MAANDEN_LETTER.map((l, i) => `<span class="${i + 1 === huidig ? 'nu' : ''}">${l}</span>`).join('')}</div></div>
+      ${rijen.join('')}
+      <p class="legenda"><span class="cel aan moet"></span> moet <span class="cel aan kan"></span> kan <span class="cel aan niet"></span> liever niet</p>
+    </div>`;
+}
+
+async function schermPlant(id) {
+  const plant = state.tuin.alle.find((p) => p.id === id);
+  if (!plant) return '<p class="leeg">Plant niet gevonden. <a href="#/planten">Terug naar planten</a></p>';
+  const notities = (await opslag.perPlant('notities', id)).sort((a, b) => b.datum.localeCompare(a.datum));
+  const m = state.datum.getMonth() + 1;
+  const taken = (plant.taken || []).map((t) => ({ ...t, key: `${plant.id}/${t.id}`, plant }));
+  const nu = taken.filter((t) => t.prioriteit !== 'niet' && inPeriode(t, m));
+  const letOp = taken.filter((t) => t.prioriteit === 'niet' && inPeriode(t, m));
+  const verborgen = state.tuin.verborgen.has(plant.id);
+
+  const fotos = [
+    ...(plant.foto && !plant.eigen ? [{ url: plant.foto }] : []),
+    ...plant.eigenFotos,
+  ];
+  const info = [
+    ['Standplaats', plant.standplaats], ['Bodem', plant.bodem], ['Hoogte', plant.hoogte],
+    ['Bloei', plant.bloei], ['Winterhardheid', plant.winterhard], ['Water & voeding', plant.waterVoeding],
+    ['Ziekten & plagen', plant.ziekten], ['Insecten & vogels', plant.insecten], ['Goed om te weten', plant.opmerkingen],
+  ].filter(([, w]) => w);
+
+  return `
+    <a class="terug" href="#/planten">← Planten</a>
+    <div class="galerij">
+      ${fotos.length ? fotos.map((f) => `
+        <figure>
+          <img src="${esc(f.url)}" alt="${esc(plant.naam)}">
+          ${f.id ? `<button class="foto-weg" data-actie="foto-weg" data-id="${f.id}" aria-label="Foto verwijderen">✕</button>` : ''}
+          ${f.datum ? `<figcaption>${kortDatum(f.datum)}</figcaption>` : ''}
+        </figure>`).join('') : '<div class="galerij__leeg">🌿 Nog geen foto</div>'}
+    </div>
+    <label class="knop knop--licht foto-knop">📷 Foto toevoegen
+      <input type="file" accept="image/*" data-invoer="foto" data-plant="${esc(plant.id)}" hidden>
+    </label>
+
+    <header class="kop">
+      <h1>${esc(plant.naam)}</h1>
+      <p class="kop__sub"><em>${esc(plant.latijn)}</em>${plant.categorie ? ` · ${esc(plant.categorie)}` : ''}</p>
+      ${plant.zekerheid && plant.zekerheid !== 'zeker' ? `<p><span class="badge">${esc(plant.zekerheid)}</span></p>` : ''}
+    </header>
+    ${plant.beschrijving ? `<p class="beschrijving">${esc(plant.beschrijving)}</p>` : ''}
+    ${plant.zorgVan ? `<p class="klein">Verzorging: zelfde als <em>${esc(plant.zorgVan)}</em>.</p>` : ''}
+
+    ${nu.length || letOp.length ? `
+      <section class="sectie">
+        <h2>Nu (${MAANDEN[m - 1]})</h2>
+        <div class="kaarten">${nu.map((t) => taakKaart(t, { gedaan: isGedaan(t, laatsteGedaan(t.key), state.datum) })).join('')}</div>
+        ${letOp.map((t) => `<p class="letop-los">⚠️ <strong>${esc(t.titel)}.</strong> ${esc(t.uitleg)}</p>`).join('')}
+      </section>` : ''}
+
+    ${taken.length || (plant.bloeiMaanden || []).length ? `
+      <section class="sectie">
+        <h2>Jaarkalender</h2>
+        ${jaarstrip(plant)}
+      </section>` : ''}
+
+    ${taken.length ? `
+      <section class="sectie">
+        <h2>Alle taken</h2>
+        <ul class="takenlijst">
+          ${[...taken].sort((a, b) => a.van - b.van).map((t) => {
+            const laatste = laatsteGedaan(t.key);
+            return `
+            <li class="takenlijst__item takenlijst__item--${t.prioriteit}">
+              <details data-open-id="t-${esc(t.key)}">
+                <summary><span class="takenlijst__periode">${esc(periodeTekst(t))}</span> ${esc(t.titel)}</summary>
+                ${chips(t, false)}
+                <p>${esc(t.uitleg)}</p>
+                ${laatste ? `<p class="klein">Laatst gedaan: ${kortDatum(laatste)}</p>` : ''}
+              </details>
+            </li>`;
+          }).join('')}
+        </ul>
+      </section>` : ''}
+
+    ${info.length ? `
+      <section class="sectie">
+        <h2>Over deze plant</h2>
+        <dl class="info">${info.map(([k, w]) => `<dt>${esc(k)}</dt><dd>${esc(w)}</dd>`).join('')}</dl>
+      </section>` : ''}
+
+    <section class="sectie">
+      <h2>Mijn notities</h2>
+      <form class="notitie-form" data-form="notitie" data-plant="${esc(plant.id)}">
+        <textarea name="tekst" rows="2" placeholder="Bijv. 'gesnoeid tot 30 cm, veel nieuwe scheuten'" required></textarea>
+        <button class="knop" type="submit">Opslaan</button>
+      </form>
+      <ul class="notities">
+        ${notities.map((n) => `
+          <li><div><span class="klein">${kortDatum(n.datum)}</span><p>${esc(n.tekst)}</p></div>
+          <button class="tekstknop" data-actie="notitie-weg" data-id="${n.id}" aria-label="Notitie verwijderen">✕</button></li>`).join('')}
+      </ul>
+    </section>
+
+    ${(plant.bronnen || []).length ? `
+      <section class="sectie">
+        <h2>Bronnen</h2>
+        <ul class="bronnen">${plant.bronnen.map((b) => `<li><a href="${esc(b)}" target="_blank" rel="noopener">${esc(hostnaam(b))}</a></li>`).join('')}</ul>
+      </section>` : ''}
+
+    <section class="sectie acties">
+      ${plant.eigen ? `
+        <a class="knop knop--licht" href="#/bewerk/${esc(plant.id)}">Bewerken</a>
+        <button class="knop knop--gevaar" data-actie="plant-weg" data-id="${esc(plant.id)}">Plant verwijderen</button>` : verborgen ? `
+        <button class="knop knop--licht" data-actie="toon" data-id="${esc(plant.id)}">Weer tonen in mijn tuin</button>` : `
+        <button class="knop knop--licht" data-actie="verberg" data-id="${esc(plant.id)}">Verbergen (staat niet meer in mijn tuin)</button>`}
+    </section>`;
+}
+
+function schermKalender() {
+  const m = state.kalenderMaand || state.datum.getMonth() + 1;
+  const taken = alleTaken(state.tuin.planten).filter((t) => inPeriode(t, m));
+  const letOp = taken.filter((t) => t.prioriteit === 'niet');
+  const perPlant = new Map();
+  for (const t of taken) if (t.prioriteit !== 'niet') {
+    if (!perPlant.has(t.plant.id)) perPlant.set(t.plant.id, { plant: t.plant, taken: [] });
+    perPlant.get(t.plant.id).taken.push(t);
+  }
+  return `
+    <header class="kop"><h1>Kalender</h1><p class="kop__sub">Wat staat er per maand op het programma?</p></header>
+    <div class="maanden" role="tablist">
+      ${MAANDEN.map((naam, i) => `<button class="filter${i + 1 === m ? ' filter--aan' : ''}" data-actie="maand" data-maand="${i + 1}">${naam.slice(0, 3)}</button>`).join('')}
+    </div>
+    <h2 class="maandtitel">${MAANDEN[m - 1]}</h2>
+    ${letOpLijst(letOp)}
+    <div class="kalender">
+      ${[...perPlant.values()].map(({ plant, taken: lijst }) => `
+        <article class="kalplant">
+          <a href="#/plant/${esc(plant.id)}" class="kalplant__kop">${thumb(plant, 'mini')}<strong>${esc(plant.naam)}</strong></a>
+          <ul>
+            ${lijst.map((t) => `
+              <li class="kalplant__taak kalplant__taak--${t.prioriteit}">
+                <details data-open-id="k-${esc(t.key)}">
+                  <summary>${esc(t.titel)} <span class="klein">${esc(periodeTekst(t))}</span></summary>
+                  <p>${esc(t.uitleg)}</p>
+                </details>
+              </li>`).join('')}
+          </ul>
+        </article>`).join('') || '<p class="leeg">Geen taken in deze maand.</p>'}
+    </div>`;
+}
+
+function taakRij(t = {}) {
+  const maandOpties = (sel) => MAANDEN.map((n, i) => `<option value="${i + 1}"${i + 1 === sel ? ' selected' : ''}>${n}</option>`).join('');
+  return `
+    <fieldset class="taakrij" data-id="${esc(t.id || '')}">
+      <input name="titel" placeholder="Taak, bijv. Snoeien" value="${esc(t.titel || '')}" required>
+      <div class="taakrij__rij">
+        <label>Van <select name="van">${maandOpties(t.van || 3)}</select></label>
+        <label>t/m <select name="tot">${maandOpties(t.tot || t.van || 3)}</select></label>
+      </div>
+      <div class="taakrij__rij">
+        <label>Soort <select name="prioriteit">
+          <option value="moet"${t.prioriteit === 'moet' ? ' selected' : ''}>moet</option>
+          <option value="kan"${!t.prioriteit || t.prioriteit === 'kan' ? ' selected' : ''}>kan</option>
+          <option value="niet"${t.prioriteit === 'niet' ? ' selected' : ''}>liever niet</option>
+        </select></label>
+        <label>Herhaal <select name="herhaal">
+          <option value="">1× per periode</option>
+          <option value="maandelijks"${t.herhaal === 'maandelijks' ? ' selected' : ''}>maandelijks</option>
+          <option value="wekelijks"${t.herhaal === 'wekelijks' ? ' selected' : ''}>wekelijks</option>
+        </select></label>
+      </div>
+      <textarea name="uitleg" rows="2" placeholder="Hoe doe je het?">${esc(t.uitleg || '')}</textarea>
+      <button type="button" class="tekstknop" data-actie="taak-weg">Taak verwijderen</button>
+    </fieldset>`;
+}
+
+function schermFormulier(id) {
+  const plant = id ? state.tuin.alle.find((p) => p.id === id && p.eigen) : null;
+  if (id && !plant) return '<p class="leeg">Alleen eigen planten kun je bewerken.</p>';
+  const p = plant || { taken: [] };
+  const veld = (naam, label, rijen = 0, placeholder = '') => rijen
+    ? `<label>${label}<textarea name="${naam}" rows="${rijen}" placeholder="${esc(placeholder)}">${esc(p[naam] || '')}</textarea></label>`
+    : `<label>${label}<input name="${naam}" value="${esc(p[naam] || '')}" placeholder="${esc(placeholder)}"></label>`;
+  return `
+    <a class="terug" href="${plant ? `#/plant/${esc(plant.id)}` : '#/planten'}">← Terug</a>
+    <header class="kop"><h1>${plant ? 'Plant bewerken' : 'Plant toevoegen'}</h1></header>
+    <form class="formulier" data-form="plant" data-id="${esc(plant?.id || '')}">
+      <label>Naam *<input name="naam" required value="${esc(p.naam || '')}" placeholder="Bijv. Vlinderstruik"></label>
+      ${veld('latijn', 'Latijnse naam', 0, 'Bijv. Buddleja davidii')}
+      <label>Soort plant<select name="categorie">${CATEGORIEEN.map((c) => `<option${c === (p.categorie || 'Heester') ? ' selected' : ''}>${c}</option>`).join('')}</select></label>
+      ${plant ? '' : `<label>Foto<input type="file" name="foto" accept="image/*"></label>`}
+      ${veld('beschrijving', 'Beschrijving', 3)}
+      ${veld('standplaats', 'Standplaats', 0, 'zon / halfschaduw / schaduw')}
+      ${veld('bloei', 'Bloei', 0, 'Bijv. juli–september')}
+      ${veld('opmerkingen', 'Goed om te weten', 3)}
+      <h2>Taken</h2>
+      <div class="taakrijen">${(p.taken.length ? p.taken : [{}]).map(taakRij).join('')}</div>
+      <button type="button" class="knop knop--licht" data-actie="taak-erbij">+ Taak</button>
+      <button type="submit" class="knop knop--groot">Opslaan</button>
+    </form>`;
+}
+
+async function schermMeer() {
+  let schatting = '';
+  try {
+    if (navigator.storage?.estimate) {
+      const { usage } = await navigator.storage.estimate();
+      schatting = `Gebruikte opslag op dit apparaat: ${(usage / 1024 / 1024).toFixed(1)} MB.`;
+    }
+  } catch { /* geen schatting */ }
+  const verborgen = state.tuin.alle.filter((p) => state.tuin.verborgen.has(p.id));
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  return `
+    <header class="kop"><h1>Meer</h1></header>
+
+    <section class="sectie kaartje">
+      <h2>Gegevens overzetten</h2>
+      <p>Afgevinkte taken, notities, eigen planten en foto's staan alleen op dit apparaat. Met een export maak je een back-up of zet je alles over naar een ander apparaat.</p>
+      <div class="acties">
+        <button class="knop" data-actie="export">Exporteren</button>
+        <label class="knop knop--licht">Importeren<input type="file" accept="application/json,.json" data-invoer="import" hidden></label>
+      </div>
+      <p class="klein">Importeren vervangt de gegevens op dit apparaat. ${esc(schatting)}</p>
+    </section>
+
+    ${verborgen.length ? `
+      <section class="sectie kaartje">
+        <h2>Verborgen planten</h2>
+        <ul class="bronnen">${verborgen.map((p) => `<li>${esc(p.naam)} <button class="tekstknop" data-actie="toon" data-id="${esc(p.id)}">Weer tonen</button></li>`).join('')}</ul>
+      </section>` : ''}
+
+    <section class="sectie kaartje">
+      <h2>Andere datum bekijken</h2>
+      <p>Bekijk hoe het Nu-scherm eruitziet op een andere dag, bijvoorbeeld om vooruit te plannen.</p>
+      <form class="acties" data-form="datum">
+        <input type="date" name="datum" value="${iso(state.datum)}" required>
+        <button class="knop" type="submit">Bekijk</button>
+        ${isTestdatum() ? '<button class="knop knop--licht" type="button" data-actie="datum-reset">Terug naar vandaag</button>' : ''}
+      </form>
+    </section>
+
+    <section class="sectie kaartje">
+      <h2>Op je telefoon installeren</h2>
+      <p>Open deze pagina in Chrome op je telefoon, tik op het menu (⋮) en kies <strong>Toevoegen aan startscherm</strong> of <strong>App installeren</strong>. Daarna werkt de app ook zonder internet.</p>
+    </section>
+
+    <section class="sectie kaartje">
+      <h2>Over deze app</h2>
+      <p>De planten zijn op 24 oktober 2026 herkend aan de hand van foto's. De verzorgingsinformatie komt uit betrouwbare bronnen (o.a. RHS, MAX Vandaag, tuinadvies.be, Hessenhof, Intratuin, Van den Berk, Vogelbescherming) en is afgestemd op het Nederlandse klimaat. Waar bronnen elkaar tegenspreken, staat dat bij de plant onder 'Goed om te weten'.</p>
+      <p>Periodes zijn richtlijnen per maand: kijk ook naar het weer (geen snoei bij vorst, geen hagen knippen als er nesten zijn).</p>
+    </section>`;
+}
+
+// ---------------------------------------------------------------- router
+
+async function render({ scrollNaarBoven = false } = {}) {
+  const open = new Set([...app.querySelectorAll('details[open][data-open-id]')].map((d) => d.dataset.openId));
+  const [, naam = 'nu', arg] = (location.hash || '#/nu').split('/');
+  let html;
+  switch (naam) {
+    case 'planten': html = schermPlanten(); break;
+    case 'plant': html = await schermPlant(decodeURIComponent(arg || '')); break;
+    case 'kalender': html = schermKalender(); break;
+    case 'meer': html = await schermMeer(); break;
+    case 'nieuw': html = schermFormulier(null); break;
+    case 'bewerk': html = schermFormulier(decodeURIComponent(arg || '')); break;
+    default: html = schermNu();
+  }
+  app.innerHTML = html;
+  for (const d of app.querySelectorAll('details[data-open-id]')) if (open.has(d.dataset.openId)) d.open = true;
+  const maand = app.querySelector('.maanden .filter--aan');
+  if (maand) maand.parentElement.scrollLeft = maand.offsetLeft - maand.parentElement.clientWidth / 2 + maand.clientWidth / 2;
+  const tab = { plant: 'planten', nieuw: 'planten', bewerk: 'planten' }[naam] || naam;
+  for (const a of document.querySelectorAll('.nav a')) a.classList.toggle('actief', a.dataset.tab === tab);
+  if (scrollNaarBoven) window.scrollTo(0, 0);
+}
+
+async function vernieuw() {
+  state.tuin = await laadTuin();
+  state.gedaan = await opslag.gedaanMap();
+  await render();
+}
+
+// ---------------------------------------------------------------- acties
+
+async function vinkAf(keys) {
+  for (const k of keys) await opslag.vinkAf(k, state.datum);
+  state.gedaan = await opslag.gedaanMap();
+  await render();
+  toast(keys.length > 1 ? `${keys.length} taken gedaan` : 'Gedaan ✓', {
+    label: 'Ongedaan maken',
+    doe: async () => {
+      for (const k of keys) await opslag.maakOngedaan(k);
+      state.gedaan = await opslag.gedaanMap();
+      await render();
+    },
+  });
+}
+
+app.addEventListener('click', async (e) => {
+  const el = e.target.closest('[data-actie]');
+  if (!el) return;
+  const { actie } = el.dataset;
+  switch (actie) {
+    case 'vink': return vinkAf([el.dataset.key]);
+    case 'vink-groep': return vinkAf(el.dataset.keys.split(' '));
+    case 'ongedaan':
+      await opslag.maakOngedaan(el.dataset.key);
+      state.gedaan = await opslag.gedaanMap();
+      return render();
+    case 'filter': state.filter = el.dataset.cat; return render();
+    case 'maand': state.kalenderMaand = Number(el.dataset.maand); return render();
+    case 'notitie-weg':
+      if (!confirm('Notitie verwijderen?')) return;
+      await opslag.verwijder('notities', Number(el.dataset.id));
+      return render();
+    case 'foto-weg':
+      if (!confirm('Deze foto verwijderen?')) return;
+      await opslag.verwijder('fotos', Number(el.dataset.id));
+      return vernieuw();
+    case 'verberg': case 'toon': {
+      const lijst = new Set(await opslag.instelling('verborgen', []));
+      if (actie === 'verberg') lijst.add(el.dataset.id); else lijst.delete(el.dataset.id);
+      await opslag.zetInstelling('verborgen', [...lijst]);
+      await vernieuw();
+      return toast(actie === 'verberg' ? 'Plant verborgen; terugzetten kan via Meer.' : 'Plant staat weer in je tuin.');
+    }
+    case 'plant-weg': {
+      if (!confirm('Deze plant met alle foto\'s en notities verwijderen?')) return;
+      const id = el.dataset.id;
+      await opslag.verwijder('planten', id);
+      for (const f of await opslag.perPlant('fotos', id)) await opslag.verwijder('fotos', f.id);
+      for (const n of await opslag.perPlant('notities', id)) await opslag.verwijder('notities', n.id);
+      location.hash = '#/planten';
+      return vernieuw();
+    }
+    case 'taak-erbij':
+      app.querySelector('.taakrijen').insertAdjacentHTML('beforeend', taakRij());
+      return;
+    case 'taak-weg':
+      el.closest('.taakrij').remove();
+      return;
+    case 'export': {
+      const data = await opslag.exporteer();
+      const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `tuinplanner-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      return;
+    }
+    case 'datum-reset': {
+      const url = new URL(location.href);
+      url.searchParams.delete('datum');
+      url.hash = '#/nu';
+      location.href = url.toString();
+      return;
+    }
+    default:
+  }
+});
+
+app.addEventListener('input', (e) => {
+  if (e.target.dataset.invoer === 'zoek') {
+    state.zoek = e.target.value;
+    const pos = e.target.selectionStart;
+    render().then(() => {
+      const veld = app.querySelector('[data-invoer="zoek"]');
+      veld.focus();
+      veld.setSelectionRange(pos, pos);
+    });
+  }
+});
+
+app.addEventListener('change', async (e) => {
+  const el = e.target;
+  if (el.dataset.invoer === 'foto' && el.files[0]) {
+    toast('Foto verwerken…');
+    const blob = await verkleinFoto(el.files[0]);
+    await opslag.bewaar('fotos', { plantId: el.dataset.plant, blob, datum: new Date().toISOString() });
+    await vernieuw();
+    toast('Foto toegevoegd');
+  }
+  if (el.dataset.invoer === 'import' && el.files[0]) {
+    try {
+      const data = JSON.parse(await el.files[0].text());
+      if (!confirm('Alle gegevens op dit apparaat vervangen door dit bestand?')) return;
+      await opslag.importeer(data);
+      await vernieuw();
+      toast('Gegevens geïmporteerd');
+    } catch (fout) {
+      alert(`Importeren mislukt: ${fout.message}`);
+    }
+  }
+});
+
+app.addEventListener('submit', async (e) => {
+  const form = e.target;
+  e.preventDefault();
+  if (form.dataset.form === 'notitie') {
+    const tekst = form.tekst.value.trim();
+    if (!tekst) return;
+    await opslag.bewaar('notities', { plantId: form.dataset.plant, tekst, datum: new Date().toISOString() });
+    await render();
+    toast('Notitie opgeslagen');
+  }
+  if (form.dataset.form === 'datum') {
+    const url = new URL(location.href);
+    url.searchParams.set('datum', form.datum.value);
+    url.hash = '#/nu';
+    location.href = url.toString();
+  }
+  if (form.dataset.form === 'plant') {
+    const bestaand = form.dataset.id;
+    const id = bestaand || `eigen-${Date.now().toString(36)}`;
+    const taken = [...form.querySelectorAll('.taakrij')].map((rij, i) => {
+      const v = (n) => rij.querySelector(`[name="${n}"]`).value.trim();
+      const taak = {
+        id: rij.dataset.id || `t${Date.now().toString(36)}${i}`,
+        titel: v('titel'), van: Number(v('van')), tot: Number(v('tot')),
+        prioriteit: v('prioriteit'), uitleg: v('uitleg'),
+      };
+      if (v('herhaal')) taak.herhaal = v('herhaal');
+      return taak;
+    }).filter((t) => t.titel);
+    const plant = {
+      id,
+      naam: form.naam.value.trim(),
+      latijn: form.latijn.value.trim(),
+      categorie: form.categorie.value,
+      beschrijving: form.beschrijving.value.trim(),
+      standplaats: form.standplaats.value.trim(),
+      bloei: form.bloei.value.trim(),
+      opmerkingen: form.opmerkingen.value.trim(),
+      zekerheid: 'zeker',
+      taken,
+    };
+    await opslag.bewaar('planten', plant);
+    const foto = form.foto?.files?.[0];
+    if (foto) {
+      const blob = await verkleinFoto(foto);
+      await opslag.bewaar('fotos', { plantId: id, blob, datum: new Date().toISOString() });
+    }
+    location.hash = `#/plant/${id}`;
+    await vernieuw();
+    toast(bestaand ? 'Plant bijgewerkt' : 'Plant toegevoegd');
+  }
+});
+
+window.addEventListener('hashchange', () => render({ scrollNaarBoven: true }));
+
+// ---------------------------------------------------------------- start
+
+(async function start() {
+  try {
+    await vernieuw();
+  } catch (fout) {
+    app.innerHTML = `<p class="leeg">Er ging iets mis bij het laden: ${esc(fout.message)}</p>`;
+    console.error(fout);
+  }
+  opslag.vraagBlijvendeOpslag();
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    navigator.serviceWorker.register('sw.js').catch((f) => console.warn('Service worker niet geregistreerd', f));
+  }
+}());

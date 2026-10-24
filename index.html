@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tuinplanner</title>
+  <meta name="description" content="Overzicht van het onderhoud in de tuin: wat moet of kan er nu gebeuren.">
+  <meta name="theme-color" content="#2f5434">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <main id="app" class="inhoud" aria-live="polite">
+    <p class="leeg">Tuin laden…</p>
+  </main>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <nav class="nav" aria-label="Hoofdmenu">
+    <a href="#/nu" data-tab="nu"><span aria-hidden="true">🌱</span>Nu</a>
+    <a href="#/planten" data-tab="planten"><span aria-hidden="true">🪴</span>Planten</a>
+    <a href="#/kalender" data-tab="kalender"><span aria-hidden="true">📅</span>Kalender</a>
+    <a href="#/meer" data-tab="meer"><span aria-hidden="true">⋯</span>Meer</a>
+  </nav>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
